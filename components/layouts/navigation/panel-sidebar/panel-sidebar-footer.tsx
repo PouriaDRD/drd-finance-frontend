@@ -3,7 +3,7 @@
 import { Info } from "lucide-react";
 
 import { SidebarFooter } from "@/components/ui";
-import { LogoutDialog } from "@/features/accounts/components/dialogs";
+import { LogoutDialog } from "@/features/auth/components/dialogs";
 import { AppVersion } from "@/features/shared/components";
 
 interface Props {

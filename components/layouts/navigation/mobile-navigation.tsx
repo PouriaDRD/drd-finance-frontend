@@ -5,8 +5,8 @@ import { usePathname } from "next/navigation";
 
 import { motion } from "framer-motion";
 
-import { useUser } from "@/features/accounts/context";
 import { isLinkActive } from "@/features/shared/utils";
+import { useUser } from "@/features/user/context";
 
 import { MOBILE_LINKS, NavigationLink } from "./links.nav";
 

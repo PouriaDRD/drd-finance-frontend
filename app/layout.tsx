@@ -4,10 +4,11 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Inter } from "next/font/google";
 import localFont from "next/font/local";
 
-import { UserProvider } from "@/features/accounts/context";
+import { QCProvider } from "@/features/api/contexts";
 import { ThemeProvider } from "@/features/preferences/contexts";
 import { AppToaster } from "@/features/shared/contexts";
 import { cn } from "@/features/shared/utils";
+import { UserProvider } from "@/features/user/context";
 
 import "./globals.css";
 
@@ -138,16 +139,16 @@ export default function RootLayout({ children }: Readonly<PropsWithChildren>) {
 			<body
 				suppressHydrationWarning
 				className="min-h-full flex flex-col font-iran-yekan-x! ss02">
-				<ThemeProvider
-					attribute="class"
-					defaultTheme="system"
-					enableSystem
-					disableTransitionOnChange>
-					<UserProvider>
+				<QCProvider>
+					<ThemeProvider
+						attribute="class"
+						defaultTheme="system"
+						enableSystem
+						disableTransitionOnChange>
 						<AppToaster />
-						{children}
-					</UserProvider>
-				</ThemeProvider>
+						<UserProvider>{children}</UserProvider>
+					</ThemeProvider>
+				</QCProvider>
 			</body>
 		</html>
 	);

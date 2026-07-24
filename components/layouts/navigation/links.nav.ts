@@ -4,11 +4,11 @@ import {
 	ChartBarStacked,
 	LayoutDashboard,
 	LucideIcon,
-	StarIcon,
-	WalletIcon,
+	// StarIcon,
+	// WalletIcon,
 } from "lucide-react";
 
-import { UserRole } from "@/features/accounts/types";
+import { UserRole } from "@/features/user/types";
 
 export type NavigationLink = {
 	name: string;
@@ -19,21 +19,9 @@ export type NavigationLink = {
 
 export const SIDEBAR_LINKS: NavigationLink[] = [
 	{
-		name: "داشبورد ادمین",
-		href: "/panel/admin",
-		Icon: StarIcon,
-		allowedRoles: ["admin"],
-	},
-	{
 		name: "داشبورد",
 		href: "/panel/dashboard",
 		Icon: LayoutDashboard,
-		allowedRoles: ["admin", "user"],
-	},
-	{
-		name: "مالی",
-		href: "/panel/finance",
-		Icon: WalletIcon,
 		allowedRoles: ["admin", "user"],
 	},
 	{
@@ -42,25 +30,19 @@ export const SIDEBAR_LINKS: NavigationLink[] = [
 		Icon: ChartBarStacked,
 		allowedRoles: ["admin", "user"],
 	},
+	// {
+	// 	name: "مالی",
+	// 	href: "/panel/finance",
+	// 	Icon: WalletIcon,
+	// 	allowedRoles: ["admin", "user"],
+	// },
 ];
 
 export const MOBILE_LINKS: NavigationLink[] = [
 	{
-		name: "داشبورد ادمین",
-		href: "/panel/admin",
-		Icon: StarIcon,
-		allowedRoles: ["admin"],
-	},
-	{
 		name: "داشبورد",
 		href: "/panel/dashboard",
 		Icon: LayoutDashboard,
-		allowedRoles: ["admin", "user"],
-	},
-	{
-		name: "مالی",
-		href: "/panel/finance",
-		Icon: WalletIcon,
 		allowedRoles: ["admin", "user"],
 	},
 	{
@@ -69,6 +51,12 @@ export const MOBILE_LINKS: NavigationLink[] = [
 		Icon: ChartBarStacked,
 		allowedRoles: ["admin", "user"],
 	},
+	// {
+	// 	name: "مالی",
+	// 	href: "/panel/finance",
+	// 	Icon: WalletIcon,
+	// 	allowedRoles: ["admin", "user"],
+	// },
 ];
 
 export type LadingLink = {

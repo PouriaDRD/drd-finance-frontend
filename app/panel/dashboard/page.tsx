@@ -2,12 +2,10 @@
 
 import { PageLayout } from "@/components/layouts";
 import { ErrorState, PageHeader } from "@/components/pages";
-import {
-	DashboardStats,
-	DashLoading,
-	DetailsCard,
-} from "@/components/pages/dashboard";
-import { useUser } from "@/features/accounts/context";
+import { DashLoading, DetailsCard } from "@/components/pages/dashboard";
+import { Card, CardHeader, CardTitle } from "@/components/ui";
+import { LoginHistoryTable } from "@/features/auth/components/tables";
+import { useUser } from "@/features/user/context";
 
 export default function PanelDashboardPage() {
 	const { user, isAuthenticated, isLoading } = useUser();
@@ -36,11 +34,16 @@ export default function PanelDashboardPage() {
 				description="خلاصه اطلاعات و وضعیت حساب شما"
 			/>
 
-			<DashboardStats user={user} />
-
 			<div className="grid grid-cols-1 gap-4">
 				<DetailsCard user={user} />
 			</div>
+
+			<Card className="overflow-hidden">
+				<CardHeader className="space-y-4 border-b">
+					<CardTitle className="text-base">تاریخچه ورود</CardTitle>
+				</CardHeader>
+				<LoginHistoryTable />
+			</Card>
 		</PageLayout>
 	);
 }

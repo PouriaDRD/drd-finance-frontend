@@ -8,7 +8,7 @@ import {
 	SidebarGroupLabel,
 	useSidebar,
 } from "@/components/ui";
-import { useUser } from "@/features/accounts/context";
+import { useUser } from "@/features/user/context";
 
 import PanelSidebarFooter from "./panel-sidebar-footer";
 import PanelSidebarHeader from "./panel-sidebar-header";

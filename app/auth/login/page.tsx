@@ -4,9 +4,9 @@ import Link from "next/link";
 
 import { PageLayout } from "@/components/layouts";
 import { Button } from "@/components/ui";
-import { LoginCard } from "@/features/accounts/components/cards";
-import { useUser } from "@/features/accounts/context";
+import { LoginCard } from "@/features/auth/components/cards";
 import { GridShape } from "@/features/shared/components";
+import { useUser } from "@/features/user/context";
 
 function LoginPage() {
 	const { user, isLoading } = useUser();

@@ -8,13 +8,13 @@ import {
 	SidebarMenuButton,
 	SidebarMenuItem,
 } from "@/components/ui";
-import { PublicUser } from "@/features/accounts/types";
 import { isLinkActive } from "@/features/shared/utils";
+import { User } from "@/features/user/types";
 
 import { NavigationLink, SIDEBAR_LINKS } from "../links.nav";
 
 interface Props {
-	user: PublicUser;
+	user: User;
 }
 
 export default function SidebarLinks({ user }: Props) {

@@ -11,18 +11,17 @@ import {
 	CardFooter,
 	CardHeader,
 } from "@/components/ui";
-import { LogoutDialog } from "@/features/accounts/components/dialogs";
-import { PublicUser } from "@/features/accounts/types";
+import { LogoutDialog } from "@/features/auth/components/dialogs";
 import { toIranDateTime } from "@/features/shared/utils";
+import { User } from "@/features/user/types";
 
 interface Props {
-	user: PublicUser;
+	user: User;
 }
 
 export function DetailsCard({ user }: Props) {
-	// const createdAt = toIranDateTime(user.createdAt);
-
-	const lastLogin = toIranDateTime(user.lastLoginAt ?? new Date());
+	const lastLogin = toIranDateTime(user.last_login ?? new Date());
+	const joinedAt = toIranDateTime(user.created_at ?? new Date());
 
 	const initials = user.email.slice(0, 2).toUpperCase();
 
@@ -45,7 +44,7 @@ export function DetailsCard({ user }: Props) {
 						<div className="flex items-center gap-1">
 							<p className="text-sm font-semibold">{user.name}</p>
 
-							{user.emailVerified && (
+							{user.email_verified && (
 								<VerifiedIcon className="size-4 text-primary" />
 							)}
 						</div>
@@ -64,11 +63,23 @@ export function DetailsCard({ user }: Props) {
 						<div className=" flex items-center gap-2 text-muted-foreground">
 							<CalendarDays className="size-4" />
 
+							<span className="text-xs">عضویت</span>
+						</div>
+
+						<p className="text-xs font-medium">
+							{joinedAt.dateWithMonthName}
+						</p>
+					</div>
+
+					<div className="rounded-xl border bg-muted/30 p-4 space-y-2">
+						<div className=" flex items-center gap-2 text-muted-foreground">
+							<CalendarDays className="size-4" />
+
 							<span className="text-xs">آخرین ورود</span>
 						</div>
 
 						<p className="text-xs font-medium">
-							{lastLogin.dateWithMonthName}
+							{lastLogin.datetimeWithMonthName}
 						</p>
 					</div>
 				</div>
