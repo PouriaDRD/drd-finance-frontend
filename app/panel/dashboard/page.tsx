@@ -38,8 +38,8 @@ export default function PanelDashboardPage() {
 				<DetailsCard user={user} />
 			</div>
 
-			<Card className="overflow-hidden">
-				<CardHeader className="space-y-4 border-b">
+			<Card className="overflow-hidden gap-0">
+				<CardHeader className="border-b">
 					<CardTitle className="text-base">تاریخچه ورود</CardTitle>
 				</CardHeader>
 				<LoginHistoryTable />

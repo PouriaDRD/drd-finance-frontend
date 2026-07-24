@@ -6,4 +6,9 @@ export const queryKeys = {
 	accounts: {
 		me: ["accounts", "me"],
 	},
+
+	finance: {
+		myCategories: ["finance", "my-categories"],
+		myActiveCategories: ["finance", "my-active-categories"],
+	},
 };

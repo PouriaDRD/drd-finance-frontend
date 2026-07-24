@@ -22,20 +22,14 @@ export const SIDEBAR_LINKS: NavigationLink[] = [
 		name: "داشبورد",
 		href: "/panel/dashboard",
 		Icon: LayoutDashboard,
-		allowedRoles: ["admin", "user"],
+		allowedRoles: ["superuser", "admin", "user"],
 	},
 	{
 		name: "دسته‌بندی‌ها",
-		href: "/panel/categories",
+		href: "/panel/finance/categories",
 		Icon: ChartBarStacked,
-		allowedRoles: ["admin", "user"],
+		allowedRoles: ["superuser", "admin", "user"],
 	},
-	// {
-	// 	name: "مالی",
-	// 	href: "/panel/finance",
-	// 	Icon: WalletIcon,
-	// 	allowedRoles: ["admin", "user"],
-	// },
 ];
 
 export const MOBILE_LINKS: NavigationLink[] = [
@@ -43,20 +37,14 @@ export const MOBILE_LINKS: NavigationLink[] = [
 		name: "داشبورد",
 		href: "/panel/dashboard",
 		Icon: LayoutDashboard,
-		allowedRoles: ["admin", "user"],
+		allowedRoles: ["superuser", "admin", "user"],
 	},
 	{
 		name: "دسته‌بندی‌ها",
-		href: "/panel/categories",
+		href: "/panel/finance/categories",
 		Icon: ChartBarStacked,
-		allowedRoles: ["admin", "user"],
+		allowedRoles: ["superuser", "admin", "user"],
 	},
-	// {
-	// 	name: "مالی",
-	// 	href: "/panel/finance",
-	// 	Icon: WalletIcon,
-	// 	allowedRoles: ["admin", "user"],
-	// },
 ];
 
 export type LadingLink = {
