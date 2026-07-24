@@ -4,3 +4,4 @@ export * from "./date-field";
 export * from "./description-field";
 export * from "./month-field";
 export * from "./type-field";
+export * from "./year-field";

@@ -4,6 +4,7 @@ import {
 	ChartBarStacked,
 	LayoutDashboard,
 	LucideIcon,
+	Wallet,
 	// StarIcon,
 	// WalletIcon,
 } from "lucide-react";
@@ -25,6 +26,12 @@ export const SIDEBAR_LINKS: NavigationLink[] = [
 		allowedRoles: ["superuser", "admin", "user"],
 	},
 	{
+		name: "گزاش مالی",
+		href: "/panel/finance/reports",
+		Icon: Wallet,
+		allowedRoles: ["superuser", "admin", "user"],
+	},
+	{
 		name: "دسته‌بندی‌ها",
 		href: "/panel/finance/categories",
 		Icon: ChartBarStacked,
@@ -37,6 +44,12 @@ export const MOBILE_LINKS: NavigationLink[] = [
 		name: "داشبورد",
 		href: "/panel/dashboard",
 		Icon: LayoutDashboard,
+		allowedRoles: ["superuser", "admin", "user"],
+	},
+	{
+		name: "گزاش مالی",
+		href: "/panel/finance/reports",
+		Icon: Wallet,
 		allowedRoles: ["superuser", "admin", "user"],
 	},
 	{

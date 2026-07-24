@@ -18,12 +18,12 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui";
-import { PublicCategory } from "@/features/finance/types";
+import { Category } from "@/features/finance/types";
 
 type Props<T extends FieldValues> = {
 	control: Control<T>;
 	name: Path<T>;
-	categories: PublicCategory[];
+	categories: Category[];
 	label?: string;
 };
 

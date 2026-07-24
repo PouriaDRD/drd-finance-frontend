@@ -2,19 +2,19 @@
 
 import { Button, FieldGroup, Spinner } from "@/components/ui";
 
-import { useGetCategories, useTransactionForm } from "../../hooks";
-import { PublicTransaction } from "../../types";
+import { useTransactionForm } from "../../hooks";
+import { useGetMyActiveCategories } from "../../mutations";
+import { Transaction } from "../../types";
 import {
 	AmountField,
 	CategoryField,
 	DateField,
 	DescriptionField,
-	MonthField,
 	TypeField,
 } from "../fields/transaction";
 
 interface Props {
-	transaction?: PublicTransaction;
+	transaction?: Transaction;
 	onSuccess?: () => void;
 }
 
@@ -26,7 +26,9 @@ export function TransactionForm({ transaction, onSuccess }: Props) {
 		},
 	});
 
-	const { categories } = useGetCategories({ showAll: false });
+	const { data } = useGetMyActiveCategories();
+
+	const categories = data?.success ? data.data : [];
 
 	return (
 		<form id="transaction-form" onSubmit={submit}>
@@ -44,20 +46,13 @@ export function TransactionForm({ transaction, onSuccess }: Props) {
 				{/* Category */}
 				<CategoryField
 					control={form.control}
-					name="categoryId"
+					name="category_id"
 					label="دسته‌بندی"
 					categories={categories}
 				/>
 
 				{/* Date */}
-				<DateField
-					control={form.control}
-					name="transactionDate"
-					label="تاریخ"
-				/>
-
-				{/* Month */}
-				<MonthField control={form.control} name="month" label="ماه" />
+				<DateField control={form.control} name="date" label="تاریخ" />
 
 				{/* Description */}
 				<DescriptionField

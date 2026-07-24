@@ -1,36 +1,51 @@
 "use client";
 
-import { useState } from "react";
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
-import { createTransaction, updateTransaction } from "../actions";
+import { queryClient, queryKeys } from "@/features/api/lib";
+
+import { useCreateTransaction, useUpdateTransaction } from "../mutations";
 import { transactionSchema } from "../schemas";
-import { PublicTransaction } from "../types";
+import { Transaction } from "../types";
 
 interface Props {
-	transaction?: PublicTransaction;
+	transaction?: Transaction;
 	onSuccess?: () => void;
 }
 
 export function useTransactionForm({ transaction, onSuccess }: Props) {
-	const [isPending, setIsPending] = useState(false);
+	const transactionMutation = useCreateTransaction();
+	const transactionUpdateMutation = useUpdateTransaction(
+		transaction?.id || "",
+	);
 
 	const form = useForm({
 		resolver: zodResolver(transactionSchema),
 		defaultValues: {
 			amount: transaction?.amount ?? 0,
 			type: transaction?.type ?? "income",
-			categoryId: transaction?.categoryId ?? "",
-			transactionDate: transaction?.transactionDate ?? new Date(),
-			month: transaction?.month ?? 1,
+			category_id: transaction?.category.id ?? "",
+			date: transaction?.date ?? new Date(),
 			description: transaction?.description ?? "",
 		},
 	});
 
-	const handleOnSuccess = async () => {
+	const handleOnSuccess = async (data: Transaction) => {
+		await Promise.all([
+			queryClient.invalidateQueries({
+				queryKey: queryKeys.finance.myTransactionsInMonth(
+					data.month,
+					data.year,
+				),
+			}),
+
+			queryClient.invalidateQueries({
+				queryKey: queryKeys.finance.myTransactionsInYear(data.year),
+			}),
+		]);
+
 		const msg = transaction ? "تراکنش ویرایش شد" : "تراکنش وارد شد";
 
 		toast.success(msg);
@@ -41,30 +56,42 @@ export function useTransactionForm({ transaction, onSuccess }: Props) {
 	};
 
 	const submit = form.handleSubmit(async (values) => {
-		setIsPending(true);
-		try {
-			const data = transaction?.id
-				? await updateTransaction(transaction.id, values)
-				: await createTransaction(values);
+		if (!transaction) {
+			transactionMutation.mutate(values, {
+				onSuccess: async (res) => {
+					if (!res.success) {
+						toast.error(res.message || "خطا در ایجاد تراکنش");
+						return;
+					}
 
-			if (data.success) {
-				handleOnSuccess();
-			} else {
-				toast.error(data.error.toString());
-			}
-		} catch (error: unknown) {
-			if (process.env.NODE_ENV === "development") {
-				console.error("Error updating transaction: ", error);
-			}
-			toast.error("خطا در به‌روزرسانی وارد شده رخ داد!");
-		} finally {
-			setIsPending(false);
+					await handleOnSuccess(res.data);
+				},
+				onError: () => {
+					toast.error("خطا در ایجاد تراکنش");
+				},
+			});
+		} else {
+			transactionUpdateMutation.mutate(values, {
+				onSuccess: async (res) => {
+					if (!res.success) {
+						toast.error(res.message || "خطا در ویرایش تراکنش");
+						return;
+					}
+
+					await handleOnSuccess(res.data);
+				},
+				onError: () => {
+					toast.error("خطا در ویرایش تراکنش");
+				},
+			});
 		}
 	});
 
 	return {
 		form,
 		submit,
-		isPending: isPending,
+		isPending: transaction
+			? transactionMutation.isPending
+			: transactionUpdateMutation.isPending,
 	};
 }

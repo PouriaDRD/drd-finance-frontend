@@ -6,10 +6,7 @@ import { toEnglishDigits } from "@/features/shared/utils";
 import { TransactionType } from "../types";
 
 export const transactionSchema = z.object({
-	categoryId: z
-		.string()
-		.trim()
-		.min(1, "نام دسته‌بندی باید حداقل ۱ کاراکتر باشد"),
+	category_id: z.string().trim().min(1, "دسته بندی را انتخاب کنید"),
 
 	type: z.enum(TransactionType).default("income"),
 
@@ -17,12 +14,10 @@ export const transactionSchema = z.object({
 
 	amount: z
 		.number("مبلغ را وارد کنید.")
-		.min(10_000, "حداقل مبلغ ۱۰٬۰۰۰ تومان است.")
+		.min(1000, "حداقل مبلغ ۱۰۰۰ تومان است.")
 		.transform((value) => Number(toEnglishDigits(String(value)))),
 
-	transactionDate: z.custom<DateObject>((value) => value != null, {
+	date: z.custom<DateObject>((value) => value != null, {
 		message: "تاریخ تراکنش را وارد کنید.",
 	}),
-
-	month: z.number().min(1, "ماه باید حداقل ۱ باشد"),
 });

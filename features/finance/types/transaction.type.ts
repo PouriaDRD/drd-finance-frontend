@@ -1,7 +1,8 @@
-import type { HydratedDocument, Types } from "mongoose";
 import z from "zod";
 
 import { transactionSchema } from "../schemas";
+
+import { Category } from "./category.type";
 
 export type TransactionSchema = z.infer<typeof transactionSchema>;
 
@@ -9,60 +10,18 @@ export const TransactionType = ["income", "expense"] as const;
 
 export type TransactionType = (typeof TransactionType)[number];
 
-export interface ITransaction {
-	userId: string;
-
-	categoryId: string;
-
-	type: TransactionType;
-
-	description: string;
-
-	amount: number;
-
-	transactionDate: Date;
-
-	month: number;
-
-	createdAt: Date;
-
-	updatedAt: Date;
-}
-
-export type TransactionDocument = HydratedDocument<ITransaction>;
-
-export type TransactionObject = Omit<ITransaction, "userId" | "categoryId"> & {
-	_id: Types.ObjectId;
-
-	userId: Types.ObjectId | string;
-
-	categoryId: Types.ObjectId | string;
-};
-
-export type PublicTransaction = {
+export type Transaction = {
 	id: string;
-
-	userId: string;
-
-	categoryId:
-		| string
-		| {
-				id: string;
-				name: string;
-		  };
-
+	category: Category;
 	type: TransactionType;
-
 	description: string;
-
 	amount: number;
-
-	transactionDate: Date;
-
+	date: Date;
 	month: number;
-
+	year: number;
+	persian_date: string;
+	persian_month_name: string;
 	createdAt: Date;
-
 	updatedAt: Date;
 };
 
@@ -118,3 +77,31 @@ export const TransactionMonth = [
 ] as const;
 
 export type TransactionMonthValue = (typeof TransactionMonth)[number]["value"];
+
+export type PersianMonthSummary = {
+	year: number;
+	month: number;
+	month_name: string;
+	income: number;
+	expense: number;
+	balance: number;
+	count: number;
+	transactions: Transaction[];
+};
+
+export type YearlySummaryItem = {
+	month: number;
+	month_name: string;
+	income: number;
+	expense: number;
+	balance: number;
+	count: number;
+};
+
+export type YearlySummary = {
+	year: number;
+	monthly_report: YearlySummaryItem[];
+	total_income: number;
+	total_expense: number;
+	total_balance: number;
+};

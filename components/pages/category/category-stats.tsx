@@ -24,19 +24,16 @@ export function CategoryStats({ categories }: Props) {
 			<StatBaseCard
 				label="کل دسته‌بندی‌ها"
 				value={allCategories.toString()}
-				small
 			/>
 
 			<StatBaseCard
 				label="دسته‌بندی‌های فعال"
 				value={activeCategories?.length.toString() ?? "0"}
-				small
 			/>
 
 			<StatBaseCard
 				label="دسته‌بندی‌های آرشیو"
 				value={archivedCategories?.length.toString() ?? "0"}
-				small
 			/>
 		</div>
 	);

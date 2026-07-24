@@ -56,7 +56,7 @@ export function MonthField<T extends FieldValues>({
 										(month) => month.value === field.value,
 									)?.label
 								}
-							</SelectValue>{" "}
+							</SelectValue>
 						</SelectTrigger>
 
 						<SelectContent>

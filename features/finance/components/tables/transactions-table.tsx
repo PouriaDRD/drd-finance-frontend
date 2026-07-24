@@ -1,5 +1,7 @@
 "use client";
 
+import { useEffect, useEffectEvent } from "react";
+
 import {
 	Badge,
 	Table,
@@ -12,25 +14,42 @@ import {
 } from "@/components/ui";
 import { toIranDateTime } from "@/features/shared/utils";
 
-import { PublicTransaction, TransactionMonth } from "../../types";
-import { TransactionDialog } from "../dialogs";
+import { useGetMyTransactionsInMonth } from "../../mutations";
+import { PersianMonthSummary, Transaction } from "../../types";
+import { DeleteTransactionDialog, TransactionDialog } from "../dialogs";
 
 /* =========================
    MAIN COMPONENT
 ========================= */
 
 interface Props {
-	transactions: PublicTransaction[];
-	isLoadingTransactions: boolean;
-	handleGetTransactions: () => void;
+	month: number;
+	year: number;
+	onSuccess?: (persianMonthSummary?: PersianMonthSummary) => void;
 }
+export function TransactionsTable(props: Props) {
+	const { month, year, onSuccess } = props;
 
-export function TransactionsTable({
-	transactions,
-	isLoadingTransactions,
-	handleGetTransactions,
-}: Props) {
-	if (isLoadingTransactions) return <TableState type="loading" />;
+	const { data, isLoading, isError } = useGetMyTransactionsInMonth(
+		month,
+		year,
+	);
+
+	const onSuccessCallback = useEffectEvent((data?: PersianMonthSummary) => {
+		onSuccess?.(data);
+	});
+
+	useEffect(() => {
+		if (data?.success) {
+			onSuccessCallback(data.data);
+		}
+	}, [data]);
+
+	if (isLoading) return <TableState type="loading" />;
+
+	if (isError || !data || !data.success) return <TableState type="error" />;
+
+	const transactions = data.data.transactions ?? [];
 
 	if (transactions.length === 0) return <TableState type="empty" />;
 
@@ -72,25 +91,7 @@ export function TransactionsTable({
 						<TableHead
 							className="text-center"
 							suppressHydrationWarning>
-							ماه
-						</TableHead>
-
-						<TableHead
-							className="text-center"
-							suppressHydrationWarning>
 							تاریخ تراکنش
-						</TableHead>
-
-						<TableHead
-							className="text-center"
-							suppressHydrationWarning>
-							ایجاد شده
-						</TableHead>
-
-						<TableHead
-							className="text-center"
-							suppressHydrationWarning>
-							آخرین بروزرسانی
 						</TableHead>
 
 						<TableHead
@@ -107,7 +108,6 @@ export function TransactionsTable({
 							key={transaction.id}
 							transaction={transaction}
 							index={index}
-							onSuccess={() => handleGetTransactions()}
 						/>
 					))}
 				</TableBody>
@@ -125,17 +125,11 @@ function TransactionRow({
 	index,
 	onSuccess,
 }: {
-	transaction: PublicTransaction;
+	transaction: Transaction;
 	index: number;
 	onSuccess?: () => void;
 }) {
-	const createdAt = toIranDateTime(transaction.createdAt);
-	const updatedAt = toIranDateTime(transaction.updatedAt);
-	const transactionDate = toIranDateTime(transaction.transactionDate);
-
-	const monthLabel =
-		TransactionMonth.find((m) => m.value === transaction.month)?.label ||
-		transaction.month;
+	const transactionDate = toIranDateTime(transaction.date);
 
 	const formattedAmount = transaction.amount.toLocaleString("fa-IR");
 
@@ -152,7 +146,7 @@ function TransactionRow({
 			</TableCell>
 
 			<TableCell className="text-center" suppressHydrationWarning>
-				{transaction.categoryId}
+				{transaction.category.name}
 			</TableCell>
 
 			<TableCell
@@ -162,7 +156,7 @@ function TransactionRow({
 						: "text-green-600"
 				}`}
 				suppressHydrationWarning>
-				{transaction.type === "expense" ? "-" : "+"}
+				{/* {transaction.type === "expense" ? "-" : "+"} */}
 				{formattedAmount}
 			</TableCell>
 
@@ -178,35 +172,21 @@ function TransactionRow({
 			</TableCell>
 
 			<TableCell className="text-center" suppressHydrationWarning>
-				{monthLabel}
-			</TableCell>
-
-			<TableCell className="text-center" suppressHydrationWarning>
 				<div>{transactionDate.dateWithMonthName}</div>
 				<div className="text-xs text-muted-foreground">
 					{transactionDate.time}
 				</div>
 			</TableCell>
 
-			<TableCell className="text-center" suppressHydrationWarning>
-				<div>{createdAt.dateWithMonthName}</div>
-				<div className="text-xs text-muted-foreground">
-					{createdAt.time}
-				</div>
-			</TableCell>
-
-			<TableCell className="text-center" suppressHydrationWarning>
-				<div>{updatedAt.dateWithMonthName}</div>
-				<div className="text-xs text-muted-foreground">
-					{updatedAt.time}
-				</div>
-			</TableCell>
-
-			<TableCell className="text-center" suppressHydrationWarning>
+			<TableCell
+				className="text-center space-x-2"
+				suppressHydrationWarning>
 				<TransactionDialog
 					transaction={transaction}
 					onSuccess={onSuccess}
 				/>
+
+				<DeleteTransactionDialog transaction={transaction} />
 			</TableCell>
 		</TableRow>
 	);
@@ -252,19 +232,7 @@ function TableState({ type }: { type: "loading" | "empty" | "error" }) {
 					</TableHead>
 
 					<TableHead className="text-center" suppressHydrationWarning>
-						ماه
-					</TableHead>
-
-					<TableHead className="text-center" suppressHydrationWarning>
 						تاریخ تراکنش
-					</TableHead>
-
-					<TableHead className="text-center" suppressHydrationWarning>
-						ایجاد شده
-					</TableHead>
-
-					<TableHead className="text-center" suppressHydrationWarning>
-						آخرین بروزرسانی
 					</TableHead>
 
 					<TableHead className="text-center" suppressHydrationWarning>

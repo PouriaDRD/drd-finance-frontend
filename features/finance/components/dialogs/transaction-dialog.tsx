@@ -14,11 +14,11 @@ import {
 	DialogTrigger,
 } from "@/components/ui";
 
-import { PublicTransaction } from "../../types";
+import { Transaction } from "../../types";
 import { TransactionForm } from "../forms";
 
 interface Props {
-	transaction?: PublicTransaction;
+	transaction?: Transaction;
 	onSuccess?: () => void;
 }
 
@@ -31,7 +31,7 @@ export function TransactionDialog({ transaction, onSuccess }: Props) {
 				render={
 					<Button variant="outline" size={"xs"}>
 						{transaction ? <EditIcon /> : <PlusIcon />}
-						{transaction ? "ویرایش تراکنش" : "ایجاد تراکنش"}
+						{transaction ? "ویرایش" : "ایجاد تراکنش"}
 					</Button>
 				}></DialogTrigger>
 
