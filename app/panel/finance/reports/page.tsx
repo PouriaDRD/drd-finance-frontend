@@ -54,15 +54,12 @@ export default function ReportsPage() {
 				title="گزارش مالی"
 				description="تاریخچه تراکنش‌ها و گزارشات مالی"
 			/>
-
 			<ReportForm
 				onSuccess={(data) => {
 					setReport(data);
 				}}
 			/>
-
 			<SummaryStats summary={persianMonthSummary} />
-
 			<Card className="overflow-hidden gap-0">
 				<CardHeader className="border-b flex flex-row items-center justify-between">
 					<CardTitle className="text-base" suppressHydrationWarning>

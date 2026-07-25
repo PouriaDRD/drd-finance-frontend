@@ -11,7 +11,7 @@ export default function PanelLayout({ children }: Readonly<PropsWithChildren>) {
 	return (
 		<SidebarProvider defaultOpen>
 			<PanelSidebar />
-			<div className="flex flex-col w-full overflow-hidden">
+			<div className="flex flex-col w-full h-full">
 				<PanelHeader />
 
 				<div className="overflow-auto flex-1">{children}</div>

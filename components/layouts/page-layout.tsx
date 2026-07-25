@@ -11,7 +11,7 @@ export function PageLayout({ children, className }: Props) {
 	return (
 		<main
 			className={cn(
-				"flex-1 h-full w-full px-4 py-4 sm:px-8 sm:py-8 overflow-auto",
+				"flex-1 h-full w-full px-4 py-4 sm:px-8 sm:py-8",
 				className,
 			)}>
 			{children}
