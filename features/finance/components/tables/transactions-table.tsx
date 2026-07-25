@@ -173,9 +173,9 @@ function TransactionRow({
 
 			<TableCell className="text-center" suppressHydrationWarning>
 				<div>{transactionDate.dateWithMonthName}</div>
-				<div className="text-xs text-muted-foreground">
+				{/* <div className="text-xs text-muted-foreground">
 					{transactionDate.time}
-				</div>
+				</div> */}
 			</TableCell>
 
 			<TableCell
