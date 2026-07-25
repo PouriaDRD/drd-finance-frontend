@@ -17,3 +17,11 @@ export type Category = {
 	updated_at: Date;
 	created_at: Date;
 };
+
+export type CategorySummary = {
+	category: Category;
+	income: number;
+	expense: number;
+	total: number;
+	count: number;
+};

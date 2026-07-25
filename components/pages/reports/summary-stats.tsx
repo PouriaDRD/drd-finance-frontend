@@ -4,6 +4,8 @@ import { PersianMonthSummary } from "@/features/finance/types";
 
 import { StatBaseCard } from "../stat-base-card";
 
+import { CategorySummaryStats } from "./category-summary-stats";
+
 interface Props {
 	summary?: PersianMonthSummary | null;
 }
@@ -26,11 +28,11 @@ export function SummaryStats({ summary }: Props) {
 				تومان
 			</StatBaseCard>
 
-			<StatBaseCard label="درآمد" value={incomeDisplay}>
+			<StatBaseCard label="درآمد کل" value={incomeDisplay}>
 				تومان
 			</StatBaseCard>
 
-			<StatBaseCard label="هزینه" value={expenseDisplay}>
+			<StatBaseCard label="هزینه کل" value={expenseDisplay}>
 				تومان
 			</StatBaseCard>
 
@@ -39,6 +41,8 @@ export function SummaryStats({ summary }: Props) {
 				value={allTransactions.toString()}>
 				تراکنش‌
 			</StatBaseCard>
+
+			<CategorySummaryStats summary={summary} />
 		</div>
 	);
 }
