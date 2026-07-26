@@ -30,7 +30,7 @@ export function SummaryStats({ summary }: Props) {
 		).length ?? 0;
 
 	// Balance
-	const balance = Math.abs(summary?.balance ?? 0);
+	const balance = summary?.balance ?? 0;
 	const balanceDisplay = balance.toLocaleString("fa-IR");
 
 	return (
@@ -38,7 +38,13 @@ export function SummaryStats({ summary }: Props) {
 			<StatBaseCard
 				label="موجودی"
 				value={balanceDisplay}
-				variant="default">
+				variant={
+					balance === 0
+						? "default"
+						: balance > 0
+							? "positive"
+							: "negative"
+				}>
 				کل تراکنش‌ها: {allTransactions.toString()}
 			</StatBaseCard>
 
