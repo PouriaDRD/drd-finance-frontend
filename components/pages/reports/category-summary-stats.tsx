@@ -46,33 +46,28 @@ export function CategorySummaryStats({ summary }: Props) {
 		return [...map.values()].sort((a, b) => b.total - a.total);
 	}, [summary]);
 
-	return (
-		<>
-			{categorySummary.map((item) => (
-				<StatBaseCard
-					key={item.category.id}
-					label={item.category.name}
-					value={item.total.toLocaleString("fa-IR")}>
-					تومان
-				</StatBaseCard>
-			))}
-		</>
-	);
-}
+	// Determine variant based on total amount
+	const getVariant = (total: number): "default" | "positive" | "negative" => {
+		if (total > 0) return "positive";
+		if (total < 0) return "negative";
+		return "default";
+	};
 
-{
-	/* <div
-	key={item.category.id}
-	className="flex items-center justify-between rounded-lg border p-4">
-	<div>
-		<p className="font-medium">{item.category.name}</p>
-		<p className="text-muted-foreground text-sm">
-			{item.count.toLocaleString("fa-IR")} تراکنش
-		</p>
-	</div>
+	const getSummary = (item: CategorySummary) => {
+		const itemTotal = Math.abs(item.total).toLocaleString("fa-IR");
+		const value = `${itemTotal} تومان`;
 
-	<div className="text-left">
-		<p>{item.total.toLocaleString("fa-IR")} تومان</p>
-	</div>
-</div>; */
+		return (
+			<StatBaseCard
+				key={item.category.id}
+				label={item.category.name}
+				value={value}
+				variant={getVariant(item.total)}
+				small={true}>
+				{item.count} تراکنش
+			</StatBaseCard>
+		);
+	};
+
+	return <>{categorySummary.map((item) => getSummary(item))}</>;
 }

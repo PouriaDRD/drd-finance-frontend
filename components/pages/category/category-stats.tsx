@@ -21,18 +21,15 @@ export function CategoryStats({ categories }: Props) {
 
 	return (
 		<div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-			<StatBaseCard
-				label="کل دسته‌بندی‌ها"
-				value={allCategories.toString()}
-			/>
+			<StatBaseCard label="کل" value={allCategories.toString()} />
 
 			<StatBaseCard
-				label="دسته‌بندی‌های فعال"
+				label="فعال"
 				value={activeCategories?.length.toString() ?? "0"}
 			/>
 
 			<StatBaseCard
-				label="دسته‌بندی‌های آرشیو"
+				label="آرشیو شده"
 				value={archivedCategories?.length.toString() ?? "0"}
 			/>
 		</div>
