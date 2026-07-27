@@ -1,3 +1,5 @@
+import { toEnglishDigits } from "./to-english";
+
 interface DateTime {
 	date: string;
 	time: string;
@@ -5,6 +7,11 @@ interface DateTime {
 	monthName: string;
 	dateWithMonthName: string;
 	datetimeWithMonthName: string;
+	year: number;
+	month: number;
+	day: number;
+	hour: number;
+	minute: number;
 }
 
 /**
@@ -51,5 +58,11 @@ export function toIranDateTime(date: string | Date): DateTime {
 		dateWithMonthName: `${day} ${monthName} ${year}`,
 
 		datetimeWithMonthName: `${day} ${monthName} ${year} - ${hour}:${minute}`,
+
+		year: Number(toEnglishDigits(year)),
+		month: Number(toEnglishDigits(month)),
+		day: Number(toEnglishDigits(day)),
+		hour: Number(toEnglishDigits(hour)),
+		minute: Number(toEnglishDigits(minute)),
 	};
 }

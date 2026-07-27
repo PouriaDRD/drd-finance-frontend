@@ -7,7 +7,17 @@ import {
 	type Path,
 } from "react-hook-form";
 
-import { Field, FieldError, FieldLabel, Input } from "@/components/ui";
+import {
+	Field,
+	FieldError,
+	FieldLabel,
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "@/components/ui";
+import { toIranDateTime } from "@/features/shared/utils";
 
 type Props<T extends FieldValues> = {
 	control: Control<T>;
@@ -20,32 +30,38 @@ export function YearField<T extends FieldValues>({
 	name,
 	label = "سال",
 }: Props<T>) {
+	const currentYear = toIranDateTime(new Date()).year;
+
+	const years = Array.from(
+		{ length: currentYear - 1400 + 1 },
+		(_, index) => currentYear - index,
+	);
+
 	return (
 		<Controller
 			control={control}
 			name={name}
 			render={({ field, fieldState }) => (
 				<Field data-invalid={fieldState.invalid}>
-					<FieldLabel htmlFor="field-year">{label}</FieldLabel>
+					<FieldLabel>{label}</FieldLabel>
 
-					<Input
-						id="field-year"
-						type="number"
-						placeholder="سال"
-						className="w-full"
-						value={field.value ?? ""}
-						onBlur={field.onBlur}
-						name={field.name}
-						ref={field.ref}
-						onChange={(e) => {
-							const value = e.target.value;
-							field.onChange(
-								value === ""
-									? undefined
-									: e.target.valueAsNumber,
-							);
-						}}
-					/>
+					<Select
+						value={field.value ? String(field.value) : undefined}
+						onValueChange={(value) =>
+							field.onChange(Number(value))
+						}>
+						<SelectTrigger className="w-full">
+							<SelectValue placeholder="انتخاب سال" />
+						</SelectTrigger>
+
+						<SelectContent>
+							{years.map((year) => (
+								<SelectItem key={year} value={String(year)}>
+									{year}
+								</SelectItem>
+							))}
+						</SelectContent>
+					</Select>
 
 					{fieldState.error && (
 						<FieldError

@@ -1,5 +1,9 @@
 import { z } from "zod";
 
+import { toIranDateTime } from "@/features/shared/utils";
+
+const currentYear = toIranDateTime(new Date()).year;
+
 export const reportSchema = z.object({
 	month: z
 		.number()
@@ -8,8 +12,8 @@ export const reportSchema = z.object({
 
 	year: z
 		.number()
-		.min(1405, "سال باید بین ۱۴۰۵ تا ۱۵۰۰ باشد")
-		.max(1500, "سال باید بین ۱۴۰۵ تا ۱۵۰۰ باشد"),
+		.min(1400, `سال باید بین 1400 تا ${currentYear} باشد`)
+		.max(currentYear, `سال باید بین 1400 تا ${currentYear} باشد`),
 });
 
 export type ReportSchema = z.infer<typeof reportSchema>;

@@ -13,7 +13,6 @@ import {
 	FieldLabel,
 	Select,
 	SelectContent,
-	SelectGroup,
 	SelectItem,
 	SelectTrigger,
 	SelectValue,
@@ -31,44 +30,37 @@ export function MonthField<T extends FieldValues>({
 	name,
 	label = "ماه",
 }: Props<T>) {
-	const id = `field-${String(name)}`;
-
 	return (
 		<Controller
 			control={control}
 			name={name}
 			render={({ field, fieldState }) => (
 				<Field data-invalid={fieldState.invalid}>
-					<FieldLabel htmlFor={id}>{label}</FieldLabel>
+					<FieldLabel>{label}</FieldLabel>
 
 					<Select
-						value={String(field.value ?? "")}
+						value={field.value ? String(field.value) : undefined}
 						onValueChange={(value) =>
 							field.onChange(Number(value))
 						}>
-						<SelectTrigger
-							id={id}
-							aria-invalid={fieldState.invalid}
-							className="w-full">
+						<SelectTrigger className="w-full">
 							<SelectValue placeholder="انتخاب ماه">
 								{
 									TransactionMonth.find(
 										(month) => month.value === field.value,
 									)?.label
 								}
-							</SelectValue>
+							</SelectValue>{" "}
 						</SelectTrigger>
 
 						<SelectContent>
-							<SelectGroup>
-								{TransactionMonth.map((month) => (
-									<SelectItem
-										key={month.value}
-										value={month.value}>
-										{month.label}
-									</SelectItem>
-								))}
-							</SelectGroup>
+							{TransactionMonth.map((month) => (
+								<SelectItem
+									key={month.value}
+									value={String(month.value)}>
+									{month.label}
+								</SelectItem>
+							))}
 						</SelectContent>
 					</Select>
 

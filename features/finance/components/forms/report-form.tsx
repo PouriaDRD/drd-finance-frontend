@@ -20,22 +20,20 @@ export function ReportForm({ onSuccess }: Props) {
 	});
 
 	return (
-		<form
-			id="report-form"
-			onSubmit={submit}
-			className="flex flex-col gap-4">
-			<FieldGroup className="grid grid-cols-2">
-				{/* Year */}
+		<form onSubmit={submit} className="rounded-lg border bg-card p-4">
+			<FieldGroup className="grid gap-4 md:grid-cols-[1fr_1fr_auto]">
 				<YearField control={form.control} name="year" label="سال" />
 
-				{/* Month */}
 				<MonthField control={form.control} name="month" label="ماه" />
-			</FieldGroup>
 
-			<Button type="submit" form="report-form" variant={"outline"}>
-				<SearchIcon />
-				جستجو
-			</Button>
+				<Button
+					type="submit"
+					className="mt-auto w-full md:w-auto"
+					variant={"secondary"}>
+					<SearchIcon className="size-4" />
+					جستجو
+				</Button>
+			</FieldGroup>
 		</form>
 	);
 }
