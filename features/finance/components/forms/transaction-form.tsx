@@ -10,7 +10,7 @@ import {
 	CategoryField,
 	DateField,
 	DescriptionField,
-	TypeField,
+	// TypeField,
 } from "../fields/transaction";
 
 interface Props {
@@ -41,7 +41,7 @@ export function TransactionForm({ transaction, onSuccess }: Props) {
 				/>
 
 				{/* Type */}
-				<TypeField control={form.control} name="type" label="نوع" />
+				{/* <TypeField control={form.control} name="type" label="نوع" /> */}
 
 				{/* Category */}
 				<CategoryField

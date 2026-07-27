@@ -3,12 +3,12 @@ import { z } from "zod";
 
 import { toEnglishDigits } from "@/features/shared/utils";
 
-import { TransactionType } from "../types";
+// import { TransactionType } from "../types";
 
 export const transactionSchema = z.object({
 	category_id: z.string().trim().min(1, "دسته بندی را انتخاب کنید"),
 
-	type: z.enum(TransactionType).default("income"),
+	// type: z.enum(TransactionType).default("income"),
 
 	description: z.string().min(2, "توضیحات باید حداقل ۲ کاراکتر باشد"),
 
