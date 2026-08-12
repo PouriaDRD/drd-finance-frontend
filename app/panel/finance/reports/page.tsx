@@ -7,6 +7,10 @@ import { ErrorState, PageHeader } from "@/components/pages";
 import { DashLoading } from "@/components/pages/dashboard";
 import { SummaryStats } from "@/components/pages/reports";
 import { Card, CardHeader, CardTitle } from "@/components/ui";
+import {
+	MonthlyFinanceChart,
+	MonthlyFinanceChartSkeleton,
+} from "@/features/finance/components/charts";
 import { TransactionDialog } from "@/features/finance/components/dialogs";
 import { ReportForm } from "@/features/finance/components/forms";
 import { TransactionsTable } from "@/features/finance/components/tables";
@@ -34,7 +38,7 @@ export default function ReportsPage() {
 	if (isLoading) {
 		return (
 			<PageLayout className="flex flex-col gap-4">
-				<DashLoading />
+				<MonthlyFinanceChartSkeleton />
 				<DashLoading />
 			</PageLayout>
 		);
@@ -54,12 +58,15 @@ export default function ReportsPage() {
 				title="گزارش مالی"
 				description="تاریخچه تراکنش‌ها و گزارشات مالی"
 			/>
+
 			<ReportForm
 				onSuccess={(data) => {
 					setReport(data);
 				}}
 			/>
-			<SummaryStats summary={persianMonthSummary} />
+
+			<MonthlyFinanceChart summary={persianMonthSummary} />
+
 			<Card className="overflow-hidden gap-0">
 				<CardHeader className="border-b flex flex-row items-center justify-between">
 					<CardTitle className="text-base" suppressHydrationWarning>
@@ -75,6 +82,8 @@ export default function ReportsPage() {
 					onSuccess={handleOnPersianMonthSummarySuccess}
 				/>
 			</Card>
+
+			<SummaryStats summary={persianMonthSummary} />
 		</PageLayout>
 	);
 }
