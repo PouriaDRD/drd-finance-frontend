@@ -8,6 +8,8 @@ import { DashLoading } from "@/components/pages/dashboard";
 import { SummaryStats } from "@/components/pages/reports";
 import { Card, CardHeader, CardTitle } from "@/components/ui";
 import {
+	CategorySummaryStatsChart,
+	CategorySummaryStatsChartSkeleton,
 	MonthlyFinanceChart,
 	MonthlyFinanceChartSkeleton,
 } from "@/features/finance/components/charts";
@@ -40,6 +42,7 @@ export default function ReportsPage() {
 			<PageLayout className="flex flex-col gap-4">
 				<MonthlyFinanceChartSkeleton />
 				<DashLoading />
+				<CategorySummaryStatsChartSkeleton />
 			</PageLayout>
 		);
 	}
@@ -82,6 +85,8 @@ export default function ReportsPage() {
 					onSuccess={handleOnPersianMonthSummarySuccess}
 				/>
 			</Card>
+
+			<CategorySummaryStatsChart summary={persianMonthSummary} />
 
 			<SummaryStats summary={persianMonthSummary} />
 		</PageLayout>
