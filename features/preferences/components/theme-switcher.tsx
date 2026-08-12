@@ -1,7 +1,5 @@
 "use client";
 
-import { Fragment } from "react";
-
 import { VariantProps } from "class-variance-authority";
 import { Check } from "lucide-react";
 
@@ -19,32 +17,37 @@ import { buttonVariants } from "@/components/ui/button";
 import { THEMES } from "../constants";
 import { useThemeSwitcher } from "../hooks";
 
-interface BaseSwitcherProps {
+interface ThemeSwitcherProps {
 	className?: string;
 	align?: "start" | "center" | "end";
 	size?: VariantProps<typeof buttonVariants>["size"];
 	variant?: VariantProps<typeof buttonVariants>["variant"];
 }
 
-export function ThemeSwitcher(props: BaseSwitcherProps) {
-	const {
-		className,
-		size = "icon-sm",
-		align = "center",
-		variant = "outline",
-	} = props;
-
+export function ThemeSwitcher({
+	className,
+	size = "icon-sm",
+	align = "center",
+	variant = "outline",
+}: ThemeSwitcherProps) {
 	const { mounted, theme, setTheme } = useThemeSwitcher();
 
-	if (!mounted)
+	if (!mounted) {
 		return (
-			<Button variant={variant} size={size} className={className}>
+			<Button
+				type="button"
+				variant={variant}
+				size={size}
+				className={className}
+				aria-label="در حال بارگذاری تم"
+				disabled>
 				<Spinner className="size-4" />
 			</Button>
 		);
+	}
 
 	const currentTheme =
-		THEMES.find((item) => item.value === theme) ?? THEMES[0];
+		THEMES.find(({ value }) => value === theme) ?? THEMES[0];
 
 	const CurrentIcon = currentTheme.icon;
 
@@ -53,42 +56,52 @@ export function ThemeSwitcher(props: BaseSwitcherProps) {
 			<DropdownMenuTrigger
 				render={
 					<Button
+						type="button"
 						variant={variant}
 						size={size}
 						className={className}
-					/>
-				}>
-				<CurrentIcon className="size-4" />
-			</DropdownMenuTrigger>
+						aria-label={`تم فعلی: ${currentTheme.label}`}>
+						<CurrentIcon className="size-4" aria-hidden="true" />
+					</Button>
+				}
+			/>
 
-			<DropdownMenuContent dir="rtl" align={align} className="w-40">
-				<Fragment>
-					<span className="text-muted-foreground text-xs px-2 w-full">
-						تم خود را انتخاب کنید
-					</span>
+			<DropdownMenuContent dir="rtl" align={align} className="w-44">
+				<div className="px-2 py-1.5 text-xs text-muted-foreground">
+					تم خود را انتخاب کنید
+				</div>
 
-					<DropdownMenuSeparator />
+				<DropdownMenuSeparator />
 
-					{THEMES.map((item) => {
-						const Icon = item.icon;
+				{THEMES.map((item) => {
+					const Icon = item.icon;
+					const isActive = theme === item.value;
 
-						return (
-							<DropdownMenuItem
-								key={item.value}
-								onClick={() => setTheme(item.value)}
-								className={`flex items-center justify-between`}>
-								<div className="flex items-center gap-2">
-									<Icon className="size-4" />
-									<span>{item.label}</span>
-								</div>
+					return (
+						<DropdownMenuItem
+							key={item.value}
+							onClick={() => {
+								if (!isActive) {
+									setTheme(item.value);
+								}
+							}}
+							className="gap-2">
+							<Icon
+								className="size-4 shrink-0"
+								aria-hidden="true"
+							/>
 
-								{theme === item.value && (
-									<Check className="size-4" />
-								)}
-							</DropdownMenuItem>
-						);
-					})}
-				</Fragment>
+							<span className="flex-1">{item.label}</span>
+
+							{isActive && (
+								<Check
+									className="size-4 shrink-0 text-primary"
+									aria-hidden="true"
+								/>
+							)}
+						</DropdownMenuItem>
+					);
+				})}
 			</DropdownMenuContent>
 		</DropdownMenu>
 	);
