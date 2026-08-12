@@ -3,8 +3,7 @@
 import { PageLayout } from "@/components/layouts";
 import { ErrorState, PageHeader } from "@/components/pages";
 import { DashLoading, DetailsCard } from "@/components/pages/dashboard";
-import { Card, CardHeader, CardTitle } from "@/components/ui";
-import { LoginHistoryTable } from "@/features/auth/components/tables";
+import { LoginHistoryCardTable } from "@/features/auth/components/tables";
 import { useUser } from "@/features/user/context";
 
 export default function PanelDashboardPage() {
@@ -38,12 +37,7 @@ export default function PanelDashboardPage() {
 				<DetailsCard user={user} />
 			</div>
 
-			<Card className="overflow-hidden gap-0">
-				<CardHeader className="border-b">
-					<CardTitle className="text-base">تاریخچه ورود</CardTitle>
-				</CardHeader>
-				<LoginHistoryTable />
-			</Card>
+			<LoginHistoryCardTable />
 		</PageLayout>
 	);
 }
