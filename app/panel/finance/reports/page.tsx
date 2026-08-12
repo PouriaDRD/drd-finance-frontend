@@ -6,16 +6,14 @@ import { PageLayout } from "@/components/layouts";
 import { ErrorState, PageHeader } from "@/components/pages";
 import { DashLoading } from "@/components/pages/dashboard";
 import { SummaryStats } from "@/components/pages/reports";
-import { Card, CardHeader, CardTitle } from "@/components/ui";
 import {
 	CategorySummaryStatsChart,
 	CategorySummaryStatsChartSkeleton,
 	MonthlyFinanceChart,
 	MonthlyFinanceChartSkeleton,
 } from "@/features/finance/components/charts";
-import { TransactionDialog } from "@/features/finance/components/dialogs";
 import { ReportForm } from "@/features/finance/components/forms";
-import { TransactionsTable } from "@/features/finance/components/tables";
+import { TransactionsCardTable } from "@/features/finance/components/tables";
 import { ReportSchema } from "@/features/finance/schemas";
 import { PersianMonthSummary } from "@/features/finance/types";
 import { useUser } from "@/features/user/context";
@@ -70,21 +68,11 @@ export default function ReportsPage() {
 
 			<MonthlyFinanceChart summary={persianMonthSummary} />
 
-			<Card className="overflow-hidden gap-0">
-				<CardHeader className="border-b flex flex-row items-center justify-between">
-					<CardTitle className="text-base" suppressHydrationWarning>
-						لیست تراکنش‌ها
-					</CardTitle>
-
-					<TransactionDialog />
-				</CardHeader>
-
-				<TransactionsTable
-					month={report.month}
-					year={report.year}
-					onSuccess={handleOnPersianMonthSummarySuccess}
-				/>
-			</Card>
+			<TransactionsCardTable
+				month={report.month}
+				year={report.year}
+				onSuccess={handleOnPersianMonthSummarySuccess}
+			/>
 
 			<CategorySummaryStatsChart summary={persianMonthSummary} />
 
