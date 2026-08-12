@@ -6,9 +6,7 @@ import { PageLayout } from "@/components/layouts";
 import { ErrorState, PageHeader } from "@/components/pages";
 import { CategoryStats } from "@/components/pages/category";
 import { DashLoading } from "@/components/pages/dashboard";
-import { Card, CardHeader, CardTitle } from "@/components/ui";
-import { CategoryDialog } from "@/features/finance/components/dialogs";
-import { CategoriesTable } from "@/features/finance/components/tables";
+import { CategoriesCardTable } from "@/features/finance/components/tables";
 import { Category } from "@/features/finance/types";
 import { useUser } from "@/features/user/context";
 
@@ -47,17 +45,7 @@ export default function CategoriesPage() {
 
 			<CategoryStats categories={categories} />
 
-			<Card className="overflow-hidden gap-0">
-				<CardHeader className="border-b flex flex-row items-center justify-between">
-					<CardTitle className="text-base" suppressHydrationWarning>
-						لیست دسته بندی‌ها
-					</CardTitle>
-
-					<CategoryDialog />
-				</CardHeader>
-
-				<CategoriesTable onSuccess={handleOnCategoriesSuccess} />
-			</Card>
+			<CategoriesCardTable onSuccess={handleOnCategoriesSuccess} />
 		</PageLayout>
 	);
 }

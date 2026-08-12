@@ -80,7 +80,7 @@ export function TransactionsCardTable({ month, year, onSuccess }: Props) {
    TABLE
 ========================================================= */
 
-function TransactionsTable({ month, year, onSuccess }: Props) {
+export function TransactionsTable({ month, year, onSuccess }: Props) {
 	const { data, isLoading, isError } = useGetMyTransactionsInMonth(
 		month,
 		year,
