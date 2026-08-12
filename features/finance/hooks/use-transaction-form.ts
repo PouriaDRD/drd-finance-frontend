@@ -25,7 +25,6 @@ export function useTransactionForm({ transaction, onSuccess }: Props) {
 		resolver: zodResolver(transactionSchema),
 		defaultValues: {
 			amount: transaction?.amount ? Math.abs(transaction.amount) : 0,
-			type: transaction?.type ?? "income",
 			category_id: transaction?.category.id ?? "",
 			date: transaction?.date ?? new Date(),
 			description: transaction?.description ?? "",
