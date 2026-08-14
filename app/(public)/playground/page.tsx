@@ -13,6 +13,7 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/components/ui";
+import { ThemeSwitcher } from "@/features/preferences/components";
 import { GridShape } from "@/features/shared/components";
 
 export default function PlaygroundPage() {
@@ -36,11 +37,15 @@ export default function PlaygroundPage() {
 				</CardHeader>
 
 				<CardContent className="flex flex-col gap-3">
-					<Link href="/auth/login" className="w-full">
-						<Button className="w-full" variant="outline">
-							ورود به سامانه
-						</Button>
-					</Link>
+					<div className="flex items-center justify-between gap-2">
+						<Link href="/auth/login" className="w-full">
+							<Button className="w-full" variant="outline">
+								ورود به سامانه
+							</Button>
+						</Link>
+
+						<ThemeSwitcher />
+					</div>
 
 					<div className="grid grid-cols-2 gap-2">
 						<Button
