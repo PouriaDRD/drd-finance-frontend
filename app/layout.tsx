@@ -147,9 +147,7 @@ export default function RootLayout({ children }: Readonly<PropsWithChildren>) {
 						disableTransitionOnChange>
 						<AppToaster />
 						<UserProvider>
-							<div className="overflow-hidden h-full flex-1">
-								{children}
-							</div>
+							<div className="h-full flex-1">{children}</div>
 						</UserProvider>
 					</ThemeProvider>
 				</QCProvider>
