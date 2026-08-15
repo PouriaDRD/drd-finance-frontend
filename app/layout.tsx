@@ -138,7 +138,7 @@ export default function RootLayout({ children }: Readonly<PropsWithChildren>) {
 			)}>
 			<body
 				suppressHydrationWarning
-				className="min-h-full flex flex-col font-iran-yekan-x! ss02">
+				className="min-h-full flex flex-col font-iran-yekan-x! ss02 h-full">
 				<QCProvider>
 					<ThemeProvider
 						attribute="class"
@@ -147,7 +147,9 @@ export default function RootLayout({ children }: Readonly<PropsWithChildren>) {
 						disableTransitionOnChange>
 						<AppToaster />
 						<UserProvider>
-							<div className="overflow-hidden">{children}</div>
+							<div className="overflow-hidden h-full flex-1">
+								{children}
+							</div>
 						</UserProvider>
 					</ThemeProvider>
 				</QCProvider>
