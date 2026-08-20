@@ -44,7 +44,7 @@
 	   Sapphire / Indigo
 	   ======================================================= */
 
-	--primary: #2563eb;
+	--primary: #1447e6;
 	--primary-foreground: #ffffff;
 
 	/* =======================================================
@@ -74,7 +74,7 @@
 
 	--border: #e2e6ed;
 	--input: #d7dce5;
-	--ring: #2563eb;
+	--ring: #87a5ef;
 
 	/* =======================================================
 	   Finance
@@ -89,7 +89,7 @@
 	--pending: #d97706;
 	--pending-foreground: #ffffff;
 
-	--info: #2563eb;
+	--info: #1447e6;
 	--info-foreground: #ffffff;
 
 	/* =======================================================
@@ -106,7 +106,7 @@
 	   Charts
 	   ======================================================= */
 
-	--chart-1: #2563eb;
+	--chart-1: #1447e6;
 	--chart-2: #16a34a;
 	--chart-3: #8b5cf6;
 	--chart-4: #d97706;
@@ -120,14 +120,14 @@
 	--sidebar: #ffffff;
 	--sidebar-foreground: #344054;
 
-	--sidebar-primary: #2563eb;
+	--sidebar-primary: #1447e6;
 	--sidebar-primary-foreground: #ffffff;
 
 	--sidebar-accent: #eef4ff;
 	--sidebar-accent-foreground: #1d4ed8;
 
 	--sidebar-border: #e2e6ed;
-	--sidebar-ring: #2563eb;
+	--sidebar-ring: #1447e6;
 
 	/* =======================================================
 	   Radius
@@ -165,38 +165,39 @@
 	   Base
 	   ======================================================= */
 
-	--background: #090d14;
-	--foreground: #edf2f7;
+	--background: #0b0f17;
+	--foreground: #e8edf5;
 
 	/* =======================================================
 	   Surfaces
 	   ======================================================= */
 
-	--card: #101722;
-	--card-foreground: #edf2f7;
+	--card: #111722;
+	--card-foreground: #e8edf5;
 
-	--popover: #151d29;
-	--popover-foreground: #edf2f7;
+	--popover: #151c28;
+	--popover-foreground: #e8edf5;
 
 	/* =======================================================
 	   Brand
+	   Same Sapphire / Indigo family as Light Theme
 	   ======================================================= */
 
-	--primary: #3b82f6;
+	--primary: #3b64e8;
 	--primary-foreground: #ffffff;
 
 	/* =======================================================
 	   Secondary
 	   ======================================================= */
 
-	--secondary: #171f2b;
-	--secondary-foreground: #d7dee8;
+	--secondary: #171e2a;
+	--secondary-foreground: #d7deea;
 
-	--muted: #141c27;
-	--muted-foreground: #8b98aa;
+	--muted: #151c27;
+	--muted-foreground: #929db0;
 
 	--accent: #17243a;
-	--accent-foreground: #60a5fa;
+	--accent-foreground: #6f96ff;
 
 	/* =======================================================
 	   Semantic
@@ -209,12 +210,13 @@
 	   Controls
 	   ======================================================= */
 
-	--border: #202b39;
-	--input: #1a2431;
-	--ring: #3b82f6;
+	--border: #232d3b;
+	--input: #1c2633;
+	--ring: #5578dc;
 
 	/* =======================================================
 	   Finance
+	   Same semantic color families as Light Theme
 	   ======================================================= */
 
 	--income: #22c55e;
@@ -226,23 +228,25 @@
 	--pending: #f59e0b;
 	--pending-foreground: #451a03;
 
-	--info: #60a5fa;
-	--info-foreground: #081a33;
+	--info: #3b82f6;
+	--info-foreground: #eff6ff;
 
 	/* =======================================================
 	   Finance Soft Backgrounds
+	   Same semantic colors as Light Theme,
+	   adapted for dark surfaces
 	   ======================================================= */
 
-	--income-soft: #0d2418;
-	--expense-soft: #2a1417;
-	--pending-soft: #291e0c;
-	--info-soft: #101f35;
+	--income-soft: #10271a;
+	--expense-soft: #2a171a;
+	--pending-soft: #2a210f;
+	--info-soft: #12223a;
 
 	/* =======================================================
 	   Charts
 	   ======================================================= */
 
-	--chart-1: #3b82f6;
+	--chart-1: #3b64e8;
 	--chart-2: #22c55e;
 	--chart-3: #a78bfa;
 	--chart-4: #f59e0b;
@@ -250,32 +254,33 @@
 
 	/* =======================================================
 	   Sidebar
+	   Slightly separated from main background
 	   ======================================================= */
 
-	--sidebar: #0c121b;
+	--sidebar: #0e141e;
 	--sidebar-foreground: #cbd5e1;
 
-	--sidebar-primary: #3b82f6;
+	--sidebar-primary: #3b64e8;
 	--sidebar-primary-foreground: #ffffff;
 
 	--sidebar-accent: #17243a;
-	--sidebar-accent-foreground: #60a5fa;
+	--sidebar-accent-foreground: #6f96ff;
 
-	--sidebar-border: #1c2633;
-	--sidebar-ring: #3b82f6;
+	--sidebar-border: #202a38;
+	--sidebar-ring: #3b64e8;
 
 	/* =======================================================
 	   Shadows
 	   ======================================================= */
 
-	--shadow-2xs: 0 1px 2px rgba(0, 0, 0, 0.25);
-	--shadow-xs: 0 1px 3px rgba(0, 0, 0, 0.3);
-	--shadow-sm: 0 2px 6px rgba(0, 0, 0, 0.32);
-	--shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
-	--shadow-md: 0 8px 20px rgba(0, 0, 0, 0.38);
-	--shadow-lg: 0 14px 32px rgba(0, 0, 0, 0.42);
-	--shadow-xl: 0 20px 44px rgba(0, 0, 0, 0.48);
-	--shadow-2xl: 0 28px 64px rgba(0, 0, 0, 0.55);
+	--shadow-2xs: 0 1px 2px rgba(0, 0, 0, 0.22);
+	--shadow-xs: 0 1px 3px rgba(0, 0, 0, 0.27);
+	--shadow-sm: 0 2px 6px rgba(0, 0, 0, 0.3);
+	--shadow: 0 4px 12px rgba(0, 0, 0, 0.33);
+	--shadow-md: 0 8px 20px rgba(0, 0, 0, 0.36);
+	--shadow-lg: 0 14px 32px rgba(0, 0, 0, 0.4);
+	--shadow-xl: 0 20px 44px rgba(0, 0, 0, 0.44);
+	--shadow-2xl: 0 28px 64px rgba(0, 0, 0, 0.5);
 }
 
 /* =========================================================
@@ -535,7 +540,7 @@
 }
 
 [data-sonner-toast][data-type="info"] [data-icon] {
-	color: #2563eb !important;
+	color: #1447e6 !important;
 }
 
 /* =========================================================
