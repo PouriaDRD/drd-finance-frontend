@@ -20,10 +20,10 @@ export default function CategoriesPage() {
 		return (
 			<PageLayout
 				className={`
-					flex flex-col gap-4
+					mx-auto flex w-full max-w-[1600px]
+					flex-col gap-4
 				`}>
 				<DashLoading />
-
 				<DashLoading />
 			</PageLayout>
 		);
@@ -40,18 +40,19 @@ export default function CategoriesPage() {
 	return (
 		<PageLayout
 			className={`
-				flex flex-col gap-4
+				mx-auto flex w-full max-w-[1600px]
+				flex-col gap-4 sm:gap-5
 			`}>
 			<FinancePageHeader
 				title="دسته‌بندی‌های مالی"
-				description={"مدیریت دسته‌بندی‌های درآمد و هزینه"}
+				description="ساختار درآمد و هزینه را مدیریت کنید تا گزارش‌ها دقیق و قابل تحلیل بمانند"
 			/>
 
 			<CategoryStats categories={categories} />
 
 			<CategoriesCardTable
-				onSuccess={(data) => {
-					setCategories(data ?? []);
+				onSuccess={(value) => {
+					setCategories(value ?? []);
 				}}
 			/>
 		</PageLayout>

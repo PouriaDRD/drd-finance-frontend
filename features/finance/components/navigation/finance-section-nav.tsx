@@ -1,28 +1,32 @@
 "use client";
 
+import type { Route } from "next";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-import { CalendarRange, ChartColumnBig, Tags } from "lucide-react";
+import { CalendarRange, ChartNoAxesCombined, Tags } from "lucide-react";
 
 import { cn } from "@/features/shared/utils";
 
 const links = [
 	{
 		label: "ماهانه",
-		description: "گزارش و تراکنش‌ها",
+		shortLabel: "ماهانه",
+		description: "جزئیات و تراکنش‌ها",
 		href: "/panel/finance/reports/monthly",
 		Icon: CalendarRange,
 	},
 	{
 		label: "سالانه",
-		description: "نمای ۱۲ ماهه",
+		shortLabel: "سالانه",
+		description: "روند و مقایسه ۱۲ ماه",
 		href: "/panel/finance/reports/yearly",
-		Icon: ChartColumnBig,
+		Icon: ChartNoAxesCombined,
 	},
 	{
 		label: "دسته‌بندی‌ها",
-		description: "مدیریت درآمد و هزینه",
+		shortLabel: "دسته‌ها",
+		description: "مدیریت ساختار مالی",
 		href: "/panel/finance/categories",
 		Icon: Tags,
 	},
@@ -32,75 +36,80 @@ export function FinanceSectionNav() {
 	const pathname = usePathname();
 
 	return (
-		<div
+		<nav
+			aria-label="بخش‌های امور مالی"
 			className={`
-				overflow-x-auto rounded-2xl
-				border border-border/70 bg-muted/30 p-1
+				rounded-2xl border border-border/70
+				bg-card/80 p-1.5 shadow-sm
+				backdrop-blur-xl
 			`}>
-			<div
-				className={`
-					grid min-w-130 grid-cols-3 gap-1
-					sm:min-w-0
-				`}>
-				{links.map(({ label, description, href, Icon }) => {
+			<div className="grid grid-cols-3 gap-1">
+				{links.map(({ label, shortLabel, description, href, Icon }) => {
 					const isActive =
 						pathname === href || pathname.startsWith(`${href}/`);
 
 					return (
 						<Link
 							key={href}
-							href={href as "/"}
+							href={href as Route}
+							aria-current={isActive ? "page" : undefined}
 							className={cn(
 								`
-										flex items-center gap-3
-										rounded-xl px-3 py-2.5
+										group relative flex min-w-0
+										items-center justify-center gap-2
+										rounded-xl px-2 py-2.5
 										transition-all duration-200
+										sm:justify-start sm:px-3
 									`,
 								isActive
 									? `
-											bg-background
-											text-foreground
+											bg-foreground text-background
 											shadow-sm
 										`
 									: `
 											text-muted-foreground
-											hover:bg-background/60
+											hover:bg-muted/70
 											hover:text-foreground
 										`,
 							)}>
 							<div
 								className={cn(
 									`
-											flex size-9 shrink-0
+											flex size-8 shrink-0
 											items-center justify-center
-											rounded-lg
+											rounded-lg transition-colors
 										`,
 									isActive
-										? `
-												bg-primary/10
-												text-primary
-											`
+										? "bg-background/12"
 										: `
 												bg-muted
-												text-muted-foreground
+												group-hover:bg-background
 											`,
 								)}>
 								<Icon className="size-4" />
 							</div>
 
-							<div className="min-w-0">
-								<p
-									className={`
-											text-sm font-semibold
-										`}>
-									{label}
+							<div className="min-w-0 text-start">
+								<p className="text-xs font-semibold sm:text-sm">
+									<span className="sm:hidden">
+										{shortLabel}
+									</span>
+
+									<span className="hidden sm:inline">
+										{label}
+									</span>
 								</p>
 
 								<p
-									className={`
-											truncate text-[11px]
-											text-muted-foreground
-										`}>
+									className={cn(
+										`
+												mt-0.5 hidden truncate
+												text-[10px] sm:block
+											`,
+										isActive
+											? "text-background/65"
+											: "text-muted-foreground",
+									)}>
 									{description}
 								</p>
 							</div>
@@ -108,6 +117,6 @@ export function FinanceSectionNav() {
 					);
 				})}
 			</div>
-		</div>
+		</nav>
 	);
 }

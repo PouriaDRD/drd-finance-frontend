@@ -1,7 +1,6 @@
 import z from "zod";
 
 import { transactionSchema } from "../schemas";
-
 import { Category } from "./category.type";
 
 export type TransactionSchema = z.infer<typeof transactionSchema>;
@@ -12,71 +11,36 @@ export type TransactionType = (typeof TransactionType)[number];
 
 export type Transaction = {
 	id: string;
-	category: Category;
+	category: Category | null;
 	type: TransactionType;
 	description: string;
 	amount: number;
-	date: Date;
+	date: string;
 	month: number;
 	year: number;
 	persian_date: string;
 	persian_month_name: string;
-	createdAt: Date;
-	updatedAt: Date;
+	created_at: string;
+	updated_at: string;
 };
 
 export const TransactionMonth = [
-	{
-		value: 1,
-		label: "فروردین",
-	},
-	{
-		value: 2,
-		label: "اردیبهشت",
-	},
-	{
-		value: 3,
-		label: "خرداد",
-	},
-	{
-		value: 4,
-		label: "تیر",
-	},
-	{
-		value: 5,
-		label: "مرداد",
-	},
-	{
-		value: 6,
-		label: "شهریور",
-	},
-	{
-		value: 7,
-		label: "مهر",
-	},
-	{
-		value: 8,
-		label: "آبان",
-	},
-	{
-		value: 9,
-		label: "آذر",
-	},
-	{
-		value: 10,
-		label: "دی",
-	},
-	{
-		value: 11,
-		label: "بهمن",
-	},
-	{
-		value: 12,
-		label: "اسفند",
-	},
+	{ value: 1, label: "فروردین" },
+	{ value: 2, label: "اردیبهشت" },
+	{ value: 3, label: "خرداد" },
+	{ value: 4, label: "تیر" },
+	{ value: 5, label: "مرداد" },
+	{ value: 6, label: "شهریور" },
+	{ value: 7, label: "مهر" },
+	{ value: 8, label: "آبان" },
+	{ value: 9, label: "آذر" },
+	{ value: 10, label: "دی" },
+	{ value: 11, label: "بهمن" },
+	{ value: 12, label: "اسفند" },
 ] as const;
 
-export type TransactionMonthValue = (typeof TransactionMonth)[number]["value"];
+export type TransactionMonthValue =
+	(typeof TransactionMonth)[number]["value"];
 
 export type PersianMonthSummary = {
 	year: number;

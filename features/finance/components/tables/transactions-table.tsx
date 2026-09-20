@@ -7,15 +7,13 @@ import {
 	ArrowLeftRight,
 	ArrowUpRight,
 	CalendarDays,
-	CircleDollarSign,
-	FileText,
-	Minus,
 	MoreHorizontal,
-	Plus,
+	ReceiptText,
 	Tag,
 } from "lucide-react";
 
 import {
+	Badge,
 	Card,
 	CardHeader,
 	CardTitle,
@@ -26,7 +24,7 @@ import {
 	TableHeader,
 	TableRow,
 } from "@/components/ui";
-import { cn, toIranDateTime } from "@/features/shared/utils";
+import { cn } from "@/features/shared/utils";
 
 import { useGetMyTransactionsInMonth } from "../../mutations";
 import { PersianMonthSummary, Transaction } from "../../types";
@@ -38,28 +36,36 @@ interface Props {
 	onSuccess?: (persianMonthSummary?: PersianMonthSummary) => void;
 }
 
-/* =========================================================
-   MAIN COMPONENT
-========================================================= */
-
 export function TransactionsCardTable({ month, year, onSuccess }: Props) {
 	return (
-		<Card className="overflow-hidden gap-0">
-			<CardHeader className="flex flex-row items-center justify-between border-b bg-card/80 backdrop-blur-xl">
-				<div className="flex items-center gap-3">
-					<div className="flex size-9 shrink-0 items-center justify-center rounded-lg border bg-muted/40 text-muted-foreground">
-						<ArrowLeftRight className="size-4" strokeWidth={1.8} />
+		<Card
+			className={`
+				overflow-hidden gap-0
+				border-border/70 shadow-sm
+			`}>
+			<CardHeader
+				className={`
+					flex flex-row items-center
+					justify-between gap-3 border-b
+					bg-card/90 px-4 py-4
+					backdrop-blur-xl
+				`}>
+				<div className="flex min-w-0 items-center gap-3">
+					<div
+						className={`
+							flex size-9 shrink-0
+							items-center justify-center
+							rounded-xl border
+							bg-muted/40 text-muted-foreground
+						`}>
+						<ArrowLeftRight className="size-4" />
 					</div>
 
-					<div className="space-y-0.5">
-						<CardTitle
-							className="text-base"
-							suppressHydrationWarning>
-							لیست تراکنش‌ها
-						</CardTitle>
+					<div className="min-w-0">
+						<CardTitle className="text-base">تراکنش‌ها</CardTitle>
 
-						<p className="text-xs text-muted-foreground">
-							تراکنش‌های ثبت‌شده در این ماه
+						<p className="mt-0.5 truncate text-xs text-muted-foreground">
+							مدیریت تراکنش‌های دوره انتخاب‌شده
 						</p>
 					</div>
 				</div>
@@ -76,18 +82,14 @@ export function TransactionsCardTable({ month, year, onSuccess }: Props) {
 	);
 }
 
-/* =========================================================
-   TABLE
-========================================================= */
-
 export function TransactionsTable({ month, year, onSuccess }: Props) {
 	const { data, isLoading, isError } = useGetMyTransactionsInMonth(
 		month,
 		year,
 	);
 
-	const onSuccessCallback = useEffectEvent((data?: PersianMonthSummary) => {
-		onSuccess?.(data);
+	const onSuccessCallback = useEffectEvent((value?: PersianMonthSummary) => {
+		onSuccess?.(value);
 	});
 
 	useEffect(() => {
@@ -111,233 +113,265 @@ export function TransactionsTable({ month, year, onSuccess }: Props) {
 	}
 
 	return (
-		<div className="overflow-hidden">
-			<div className="flex max-h-96 overflow-auto">
-				<Table>
-					<TableHeader className="sticky top-0 z-20 bg-card/95 backdrop-blur-xl">
-						<TableRow>
-							<TableHead className="w-12 px-3 text-center text-[11px] font-medium text-muted-foreground">
-								#
-							</TableHead>
+		<>
+			<div
+				className={`
+					flex items-center justify-between
+					border-b bg-muted/20 px-4 py-2.5
+				`}>
+				<p className="text-xs text-muted-foreground">
+					{data.data.month_name} {data.data.year}
+				</p>
 
-							<TableHead className="min-w-52 px-3 text-right text-[11px] font-medium text-muted-foreground">
-								<TableHeaderLabel
-									icon={FileText}
-									label="توضیحات"
-								/>
-							</TableHead>
-
-							<TableHead className="px-3 text-center text-[11px] font-medium text-muted-foreground">
-								<TableHeaderLabel
-									icon={Tag}
-									label="دسته‌بندی"
-								/>
-							</TableHead>
-
-							<TableHead className="px-3 text-center text-[11px] font-medium text-muted-foreground">
-								<TableHeaderLabel
-									icon={CircleDollarSign}
-									label="مبلغ"
-								/>
-							</TableHead>
-
-							<TableHead className="px-3 text-center text-[11px] font-medium text-muted-foreground">
-								<TableHeaderLabel
-									icon={CalendarDays}
-									label="تاریخ"
-								/>
-							</TableHead>
-
-							<TableHead className="w-24 px-3 text-center text-[11px] font-medium text-muted-foreground">
-								<TableHeaderLabel
-									icon={MoreHorizontal}
-									label="عملیات"
-								/>
-							</TableHead>
-						</TableRow>
-					</TableHeader>
-
-					<TableBody>
-						{transactions.map((transaction, index) => (
-							<TransactionRow
-								key={transaction.id}
-								transaction={transaction}
-								index={index}
-								onSuccess={onSuccess}
-							/>
-						))}
-					</TableBody>
-				</Table>
+				<Badge variant="outline" className="font-normal">
+					{transactions.length.toLocaleString("fa-IR")} تراکنش
+				</Badge>
 			</div>
-		</div>
+
+			<div className="md:hidden">
+				<div className="divide-y divide-border/70">
+					{transactions.map((transaction) => (
+						<TransactionMobileCard
+							key={transaction.id}
+							transaction={transaction}
+						/>
+					))}
+				</div>
+			</div>
+
+			<div className="hidden md:block">
+				<div className="max-h-130 overflow-auto">
+					<Table>
+						<TableHeader className="sticky top-0 z-20 bg-card/95 backdrop-blur-xl">
+							<TableRow>
+								<TableHead className="min-w-60 text-right">
+									تراکنش
+								</TableHead>
+
+								<TableHead className="text-center">
+									دسته‌بندی
+								</TableHead>
+
+								<TableHead className="text-center">
+									مبلغ
+								</TableHead>
+
+								<TableHead className="text-center">
+									تاریخ
+								</TableHead>
+
+								<TableHead className="w-28 text-center">
+									عملیات
+								</TableHead>
+							</TableRow>
+						</TableHeader>
+
+						<TableBody>
+							{transactions.map((transaction) => (
+								<TransactionRow
+									key={transaction.id}
+									transaction={transaction}
+								/>
+							))}
+						</TableBody>
+					</Table>
+				</div>
+			</div>
+		</>
 	);
 }
 
-/* =========================================================
-   TABLE HEADER LABEL
-========================================================= */
-
-function TableHeaderLabel({
-	icon: Icon,
-	label,
-}: {
-	icon: typeof FileText;
-	label: string;
-}) {
-	return (
-		<div className="inline-flex items-center justify-center gap-1.5">
-			<Icon
-				className="size-3.5 text-muted-foreground/70"
-				strokeWidth={1.8}
-			/>
-
-			<span>{label}</span>
-		</div>
-	);
-}
-
-/* =========================================================
-   ROW
-========================================================= */
-
-function TransactionRow({
-	transaction,
-	index,
-	onSuccess,
-}: {
-	transaction: Transaction;
-	index: number;
-	onSuccess?: (persianMonthSummary?: PersianMonthSummary) => void;
-}) {
-	const transactionDate = toIranDateTime(transaction.date);
+function TransactionRow({ transaction }: { transaction: Transaction }) {
 	const isIncome = transaction.type === "income";
-
-	const formattedAmount = transaction.amount.toLocaleString("fa-IR");
+	const amount = Math.abs(Number(transaction.amount));
 
 	return (
-		<TableRow
-			className={cn(
-				"group border-b transition-colors last:border-0",
-				"hover:bg-muted/20",
-			)}>
-			{/* INDEX */}
-			<TableCell
-				className="px-3 text-center text-xs tabular-nums text-muted-foreground/60"
-				suppressHydrationWarning>
-				{index + 1}
-			</TableCell>
+		<TableRow className="group hover:bg-muted/25">
+			<TableCell>
+				<div className="flex min-w-0 items-center gap-3">
+					<TransactionTypeIcon isIncome={isIncome} />
 
-			{/* DESCRIPTION */}
-			<TableCell className="max-w-64 px-3" suppressHydrationWarning>
-				<div className="flex min-w-0 items-center gap-2.5">
-					<div
-						className={cn(
-							"flex size-7 shrink-0 items-center justify-center rounded-md",
-							isIncome
-								? "bg-emerald-500/8 text-emerald-600 dark:text-emerald-400"
-								: "bg-rose-500/8 text-rose-600 dark:text-rose-400",
-						)}>
-						{isIncome ? (
-							<ArrowDownLeft className="size-3.5" />
-						) : (
-							<ArrowUpRight className="size-3.5" />
-						)}
+					<div className="min-w-0">
+						<p className="max-w-72 truncate text-sm font-medium">
+							{transaction.description || "بدون توضیحات"}
+						</p>
+
+						<p className="mt-0.5 text-[11px] text-muted-foreground">
+							{isIncome ? "درآمد" : "هزینه"}
+						</p>
 					</div>
-
-					<p className="truncate text-sm font-medium">
-						{transaction.description || "بدون توضیحات"}
-					</p>
 				</div>
 			</TableCell>
 
-			{/* CATEGORY */}
-			<TableCell className="px-3 text-center" suppressHydrationWarning>
-				<span className="text-xs text-muted-foreground">
-					{transaction.category.name}
+			<TableCell className="text-center">
+				<div className="inline-flex items-center gap-1.5 text-xs text-muted-foreground">
+					<Tag className="size-3.5" />
+					{transaction.category?.name ?? "بدون دسته‌بندی"}
+				</div>
+			</TableCell>
+
+			<TableCell className="text-center">
+				<span
+					className={cn(
+						`
+							whitespace-nowrap text-sm
+							font-semibold tabular-nums
+						`,
+						isIncome
+							? "text-emerald-600 dark:text-emerald-400"
+							: "text-rose-600 dark:text-rose-400",
+					)}>
+					{isIncome ? "+" : "-"}
+					{amount.toLocaleString("fa-IR")}{" "}
+					<span className="text-[10px] font-normal text-muted-foreground">
+						تومان
+					</span>
 				</span>
 			</TableCell>
 
-			{/* AMOUNT */}
-			<TableCell className="px-3 text-center" suppressHydrationWarning>
-				<div className="inline-flex items-baseline gap-1.5 whitespace-nowrap text-sm tabular-nums">
-					{isIncome ? (
-						<Plus
-							className="size-3.5 text-emerald-500"
-							strokeWidth={2.5}
-						/>
-					) : (
-						<Minus
-							className="size-3.5 text-rose-500"
-							strokeWidth={2.5}
-						/>
-					)}
-
-					<span className="font-semibold">{formattedAmount}</span>
-
-					<span className="text-[10px] text-muted-foreground">
-						تومان
-					</span>
+			<TableCell className="text-center">
+				<div className="inline-flex items-center gap-1.5 whitespace-nowrap text-xs text-muted-foreground">
+					<CalendarDays className="size-3.5" />
+					{transaction.persian_date}
 				</div>
 			</TableCell>
 
-			{/* DATE */}
-			<TableCell
-				className="px-3 text-center text-xs text-muted-foreground"
-				suppressHydrationWarning>
-				{transactionDate.dateWithMonthName}
-			</TableCell>
-
-			{/* ACTIONS */}
-			<TableCell className="px-3 text-center" suppressHydrationWarning>
-				<div className="flex items-center justify-center gap-0.5 opacity-60 transition-opacity group-hover:opacity-100">
-					<TransactionDialog
-						transaction={transaction}
-						onSuccess={onSuccess}
-					/>
-
-					<DeleteTransactionDialog transaction={transaction} />
-				</div>
+			<TableCell className="text-center">
+				<TransactionActions transaction={transaction} />
 			</TableCell>
 		</TableRow>
 	);
 }
 
-/* =========================================================
-   STATES
-========================================================= */
+function TransactionMobileCard({ transaction }: { transaction: Transaction }) {
+	const isIncome = transaction.type === "income";
+	const amount = Math.abs(Number(transaction.amount));
+
+	return (
+		<article className="space-y-3 p-4 transition-colors hover:bg-muted/20">
+			<div className="flex items-start justify-between gap-3">
+				<div className="flex min-w-0 items-center gap-3">
+					<TransactionTypeIcon isIncome={isIncome} />
+
+					<div className="min-w-0">
+						<p className="truncate text-sm font-semibold">
+							{transaction.description || "بدون توضیحات"}
+						</p>
+
+						<div className="mt-1 flex flex-wrap items-center gap-2 text-[11px] text-muted-foreground">
+							<span>
+								{transaction.category?.name ?? "بدون دسته‌بندی"}
+							</span>
+
+							<span aria-hidden>•</span>
+
+							<span>{transaction.persian_date}</span>
+						</div>
+					</div>
+				</div>
+
+				<TransactionActions transaction={transaction} />
+			</div>
+
+			<div className="flex items-end justify-between gap-3 rounded-xl bg-muted/35 px-3 py-2.5">
+				<div>
+					<p className="text-[10px] text-muted-foreground">مبلغ</p>
+
+					<p
+						className={cn(
+							"mt-0.5 text-base font-bold tabular-nums",
+							isIncome
+								? "text-emerald-600 dark:text-emerald-400"
+								: "text-rose-600 dark:text-rose-400",
+						)}>
+						{isIncome ? "+" : "-"}
+						{amount.toLocaleString("fa-IR")}{" "}
+						<span className="text-[10px] font-normal text-muted-foreground">
+							تومان
+						</span>
+					</p>
+				</div>
+
+				<Badge
+					variant="outline"
+					className={cn(
+						"font-normal",
+						isIncome
+							? "border-emerald-500/20 bg-emerald-500/5 text-emerald-600 dark:text-emerald-400"
+							: "border-rose-500/20 bg-rose-500/5 text-rose-600 dark:text-rose-400",
+					)}>
+					{isIncome ? "درآمد" : "هزینه"}
+				</Badge>
+			</div>
+		</article>
+	);
+}
+
+function TransactionTypeIcon({ isIncome }: { isIncome: boolean }) {
+	return (
+		<div
+			className={cn(
+				`
+					flex size-9 shrink-0 items-center
+					justify-center rounded-xl border
+				`,
+				isIncome
+					? "border-emerald-500/15 bg-emerald-500/8 text-emerald-600 dark:text-emerald-400"
+					: "border-rose-500/15 bg-rose-500/8 text-rose-600 dark:text-rose-400",
+			)}>
+			{isIncome ? (
+				<ArrowDownLeft className="size-4" />
+			) : (
+				<ArrowUpRight className="size-4" />
+			)}
+		</div>
+	);
+}
+
+function TransactionActions({ transaction }: { transaction: Transaction }) {
+	return (
+		<div className="flex items-center justify-center gap-0.5">
+			<TransactionDialog transaction={transaction} />
+			<DeleteTransactionDialog transaction={transaction} />
+		</div>
+	);
+}
 
 function TableState({ type }: { type: "loading" | "empty" | "error" }) {
 	const content = {
 		loading: {
-			title: "در حال بارگذاری",
-			description: "لطفاً کمی صبر کنید...",
+			icon: ReceiptText,
+			title: "در حال دریافت تراکنش‌ها",
+			description: "اطلاعات مالی در حال بارگذاری است.",
 		},
 		empty: {
-			title: "تراکنزی وجود ندارد",
-			description: "برای این ماه هنوز تراکنشی ثبت نشده است.",
+			icon: ReceiptText,
+			title: "هنوز تراکنشی ثبت نشده",
+			description: "اولین تراکنش این دوره را ثبت کنید.",
 		},
 		error: {
-			title: "خطا در دریافت اطلاعات",
-			description: "دریافت تراکنش‌ها با مشکل مواجه شد.",
+			icon: MoreHorizontal,
+			title: "دریافت تراکنش‌ها ناموفق بود",
+			description: "لطفاً چند لحظه بعد دوباره تلاش کنید.",
 		},
 	}[type];
 
+	const Icon = content.icon;
+
 	return (
-		<div className="flex min-h-52 items-center justify-center">
-			<div className="text-center">
-				<div className="mx-auto mb-3 flex size-8 items-center justify-center rounded-lg bg-muted">
+		<div className="flex min-h-64 items-center justify-center p-6">
+			<div className="max-w-sm text-center">
+				<div className="mx-auto flex size-11 items-center justify-center rounded-2xl border bg-muted/40 text-muted-foreground">
 					{type === "loading" ? (
-						<div className="size-3.5 animate-spin rounded-full border-2 border-muted-foreground/30 border-t-foreground" />
+						<div className="size-4 animate-spin rounded-full border-2 border-muted-foreground/20 border-t-foreground" />
 					) : (
-						<span className="text-xs font-semibold text-muted-foreground">
-							{type === "empty" ? "—" : "!"}
-						</span>
+						<Icon className="size-5" />
 					)}
 				</div>
 
-				<h3 className="text-sm font-medium">{content.title}</h3>
+				<h3 className="mt-3 text-sm font-semibold">{content.title}</h3>
 
-				<p className="mt-1 text-xs text-muted-foreground">
+				<p className="mt-1 text-xs leading-5 text-muted-foreground">
 					{content.description}
 				</p>
 			</div>

@@ -6,51 +6,86 @@ import { toast } from "sonner";
 
 import { queryClient, queryKeys } from "@/features/api/lib";
 
-import { useCreateTransaction, useUpdateTransaction } from "../mutations";
+import {
+	useCreateTransaction,
+	useUpdateTransaction,
+} from "../mutations";
 import { transactionSchema } from "../schemas";
 import { Transaction } from "../types";
+import { toPersianDateObject } from "../utils";
 
 interface Props {
 	transaction?: Transaction;
 	onSuccess?: () => void;
 }
 
-export function useTransactionForm({ transaction, onSuccess }: Props) {
+export function useTransactionForm({
+	transaction,
+	onSuccess,
+}: Props) {
 	const transactionMutation = useCreateTransaction();
 	const transactionUpdateMutation = useUpdateTransaction(
-		transaction?.id || "",
+		transaction?.id ?? "",
 	);
 
 	const form = useForm({
 		resolver: zodResolver(transactionSchema),
 		defaultValues: {
-			amount: transaction?.amount ? Math.abs(transaction.amount) : 0,
-			category_id: transaction?.category.id ?? "",
-			date: transaction?.date ?? new Date(),
+			amount: transaction?.amount
+				? Math.abs(transaction.amount)
+				: 0,
+			category_id: transaction?.category?.id ?? "",
+			date: transaction?.date
+				? toPersianDateObject(transaction.date)
+				: toPersianDateObject(new Date()),
 			description: transaction?.description ?? "",
 		},
 	});
 
 	const handleOnSuccess = async (data: Transaction) => {
-		await Promise.all([
+		const invalidations = [
 			queryClient.invalidateQueries({
 				queryKey: queryKeys.finance.myTransactionsInMonth(
 					data.month,
 					data.year,
 				),
 			}),
-
 			queryClient.invalidateQueries({
 				queryKey: queryKeys.finance.myTransactionsInYear(data.year),
 			}),
-		]);
+		];
 
-		const msg = transaction ? "تراکنش ویرایش شد" : "تراکنش وارد شد";
+		if (
+			transaction &&
+			(
+				transaction.month !== data.month ||
+				transaction.year !== data.year
+			)
+		) {
+			invalidations.push(
+				queryClient.invalidateQueries({
+					queryKey: queryKeys.finance.myTransactionsInMonth(
+						transaction.month,
+						transaction.year,
+					),
+				}),
+				queryClient.invalidateQueries({
+					queryKey: queryKeys.finance.myTransactionsInYear(
+						transaction.year,
+					),
+				}),
+			);
+		}
 
-		toast.success(msg);
+		await Promise.all(invalidations);
+
+		toast.success(
+			transaction
+				? "تراکنش با موفقیت ویرایش شد"
+				: "تراکنش با موفقیت ثبت شد",
+		);
 
 		form.reset();
-
 		onSuccess?.();
 	};
 
@@ -69,28 +104,30 @@ export function useTransactionForm({ transaction, onSuccess }: Props) {
 					toast.error("خطا در ایجاد تراکنش");
 				},
 			});
-		} else {
-			transactionUpdateMutation.mutate(values, {
-				onSuccess: async (res) => {
-					if (!res.success) {
-						toast.error(res.message || "خطا در ویرایش تراکنش");
-						return;
-					}
 
-					await handleOnSuccess(res.data);
-				},
-				onError: () => {
-					toast.error("خطا در ویرایش تراکنش");
-				},
-			});
+			return;
 		}
+
+		transactionUpdateMutation.mutate(values, {
+			onSuccess: async (res) => {
+				if (!res.success) {
+					toast.error(res.message || "خطا در ویرایش تراکنش");
+					return;
+				}
+
+				await handleOnSuccess(res.data);
+			},
+			onError: () => {
+				toast.error("خطا در ویرایش تراکنش");
+			},
+		});
 	});
 
 	return {
 		form,
 		submit,
 		isPending: transaction
-			? transactionMutation.isPending
-			: transactionUpdateMutation.isPending,
+			? transactionUpdateMutation.isPending
+			: transactionMutation.isPending,
 	};
 }

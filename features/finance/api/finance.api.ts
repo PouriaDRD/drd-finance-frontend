@@ -1,10 +1,6 @@
 /**
  * Finance API layer
- *
- * All HTTP calls for finance feature
  */
-
-import { DateObject } from "react-multi-date-picker";
 
 import { apiClient, endpoints } from "@/features/api/lib";
 import { toIranDateTime } from "@/features/shared/utils";
@@ -17,6 +13,7 @@ import {
 	TransactionSchema,
 	YearlySummary,
 } from "../types";
+import { toGregorianDateString, TransactionDateInput } from "../utils";
 
 export type CurrentMonthExportFormat = "csv" | "xlsx";
 
@@ -95,26 +92,17 @@ export const financeApi = {
 		);
 	},
 
-	formatDate(date: DateObject | Date | string) {
-		if (date instanceof DateObject) {
-			return date.toDate().toISOString().split("T")[0];
-		}
-
-		if (date instanceof Date) {
-			return date.toISOString().split("T")[0];
-		}
-
-		if (typeof date === "string") {
-			return date;
-		}
-
-		return new Date().toISOString().split("T")[0];
+	/**
+	 * A transaction date is a calendar date, not a UTC instant.
+	 * Never use toISOString() here.
+	 */
+	formatDate(date: TransactionDateInput) {
+		return toGregorianDateString(date);
 	},
 };
 
 function buildFinanceExportFilename(format: CurrentMonthExportFormat): string {
 	const now = new Date();
-
 	const persian = toIranDateTime(now);
 
 	const jalaliDate = [

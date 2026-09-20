@@ -1,0 +1,347 @@
+.toaster {
+	font-family: var(--font-iran-yekan-x);
+}
+
+/* =========================================================
+   TOAST SURFACE
+   ========================================================= */
+
+.toaster [data-sonner-toast] {
+	--toast-accent: var(--muted-foreground);
+	--toast-soft: var(--muted);
+
+	display: flex !important;
+	align-items: center !important;
+
+	width: 100% !important;
+	min-height: 64px !important;
+
+	margin: 0 !important;
+
+	padding: 11px 13px !important;
+	gap: 11px !important;
+
+	direction: rtl !important;
+
+	background: var(--popover) !important;
+	color: var(--foreground) !important;
+
+	border: 1px solid var(--border) !important;
+
+	border-radius:
+		calc(var(--radius) + 4px) !important;
+
+	box-shadow: var(--shadow-lg) !important;
+
+	backdrop-filter: none !important;
+	-webkit-backdrop-filter: none !important;
+
+	filter: none !important;
+
+	overflow: hidden !important;
+}
+
+/*
+ * Force every status to use the SAME neutral surface.
+ * This intentionally overrides the old status styles that may still
+ * exist in globals.css until the cleanup script is run.
+ */
+.toaster
+	[data-sonner-toast][data-type="default"],
+.toaster
+	[data-sonner-toast][data-type="success"],
+.toaster
+	[data-sonner-toast][data-type="info"],
+.toaster
+	[data-sonner-toast][data-type="warning"],
+.toaster
+	[data-sonner-toast][data-type="error"],
+.toaster
+	[data-sonner-toast][data-type="loading"] {
+	background: var(--popover) !important;
+	color: var(--foreground) !important;
+
+	border-color: var(--border) !important;
+
+	filter: none !important;
+}
+
+/* Normal and hover must be visually identical. */
+.toaster [data-sonner-toast]:hover,
+.toaster [data-sonner-toast]:focus-within {
+	background: var(--popover) !important;
+	color: var(--foreground) !important;
+
+	border-color: var(--border) !important;
+
+	box-shadow: var(--shadow-lg) !important;
+
+	backdrop-filter: none !important;
+	-webkit-backdrop-filter: none !important;
+
+	filter: none !important;
+}
+
+/* No stripe / glow / overlay. */
+.toaster [data-sonner-toast]::before,
+.toaster [data-sonner-toast]::after {
+	content: none !important;
+	display: none !important;
+}
+
+/* =========================================================
+   CONTENT
+   ========================================================= */
+
+.content,
+.toaster [data-content] {
+	display: flex !important;
+	flex: 1 1 auto !important;
+	flex-direction: column !important;
+
+	min-width: 0 !important;
+
+	gap: 1px !important;
+
+	text-align: right !important;
+}
+
+.title,
+.toaster [data-title] {
+	margin: 0 !important;
+
+	color: var(--foreground) !important;
+
+	font-size: 0.8125rem !important;
+	font-weight: 700 !important;
+	line-height: 1.65 !important;
+
+	letter-spacing: -0.01em !important;
+}
+
+.description,
+.toaster [data-description] {
+	margin: 0 !important;
+
+	color: var(--muted-foreground) !important;
+
+	font-size: 0.6875rem !important;
+	font-weight: 500 !important;
+	line-height: 1.7 !important;
+}
+
+/*
+ * Old globals.css changes title/description by status.
+ * Keep text neutral even before that block is removed.
+ */
+.toaster
+	[data-sonner-toast][data-type="success"]
+	[data-title],
+.toaster
+	[data-sonner-toast][data-type="info"]
+	[data-title],
+.toaster
+	[data-sonner-toast][data-type="warning"]
+	[data-title],
+.toaster
+	[data-sonner-toast][data-type="error"]
+	[data-title],
+.toaster
+	[data-sonner-toast][data-type="loading"]
+	[data-title] {
+	color: var(--foreground) !important;
+}
+
+.toaster
+	[data-sonner-toast][data-type="success"]
+	[data-description],
+.toaster
+	[data-sonner-toast][data-type="info"]
+	[data-description],
+.toaster
+	[data-sonner-toast][data-type="warning"]
+	[data-description],
+.toaster
+	[data-sonner-toast][data-type="error"]
+	[data-description],
+.toaster
+	[data-sonner-toast][data-type="loading"]
+	[data-description] {
+	color: var(--muted-foreground) !important;
+}
+
+/* =========================================================
+   ICON
+   ========================================================= */
+
+.icon,
+.toaster [data-icon] {
+	display: flex !important;
+	align-items: center !important;
+	justify-content: center !important;
+
+	width: 36px !important;
+	height: 36px !important;
+
+	margin: 0 !important;
+
+	flex: 0 0 36px !important;
+
+	color: var(--toast-accent) !important;
+
+	background: var(--toast-soft) !important;
+
+	border: 1px solid
+		color-mix(
+			in srgb,
+			var(--toast-accent) 14%,
+			transparent
+		) !important;
+
+	border-radius: 11px !important;
+}
+
+/* =========================================================
+   STATUS
+   ========================================================= */
+
+.default,
+.toaster [data-sonner-toast][data-type="default"] {
+	--toast-accent: var(--muted-foreground);
+	--toast-soft: var(--muted);
+}
+
+.success,
+.toaster [data-sonner-toast][data-type="success"] {
+	--toast-accent: var(--income);
+	--toast-soft: var(--income-soft);
+}
+
+.info,
+.toaster [data-sonner-toast][data-type="info"] {
+	--toast-accent: var(--info);
+	--toast-soft: var(--info-soft);
+}
+
+.warning,
+.toaster [data-sonner-toast][data-type="warning"] {
+	--toast-accent: var(--pending);
+	--toast-soft: var(--pending-soft);
+}
+
+.error,
+.toaster [data-sonner-toast][data-type="error"] {
+	--toast-accent: var(--expense);
+	--toast-soft: var(--expense-soft);
+}
+
+.loading,
+.toaster [data-sonner-toast][data-type="loading"] {
+	--toast-accent: var(--primary);
+	--toast-soft: var(--accent);
+}
+
+/* =========================================================
+   ACTIONS
+   ========================================================= */
+
+.actionButton,
+.cancelButton,
+.toaster [data-button] {
+	display: inline-flex !important;
+	align-items: center !important;
+	justify-content: center !important;
+
+	height: 30px !important;
+
+	margin: 0 !important;
+
+	padding-inline: 10px !important;
+
+	flex: 0 0 auto !important;
+
+	border-radius: 9px !important;
+
+	font-family: inherit !important;
+	font-size: 0.6875rem !important;
+	font-weight: 700 !important;
+	line-height: 1 !important;
+
+	cursor: pointer !important;
+}
+
+.actionButton,
+.toaster [data-action] {
+	color: var(--primary-foreground) !important;
+
+	background: var(--primary) !important;
+
+	border: 1px solid
+		color-mix(
+			in srgb,
+			var(--primary) 80%,
+			var(--border)
+		) !important;
+}
+
+.actionButton:hover,
+.toaster [data-action]:hover {
+	opacity: 0.92 !important;
+}
+
+.cancelButton,
+.toaster [data-cancel] {
+	color: var(--foreground) !important;
+
+	background: var(--muted) !important;
+
+	border: 1px solid var(--border) !important;
+}
+
+/* =========================================================
+   DARK MODE
+   ========================================================= */
+
+:global(.dark)
+	.toaster
+	[data-sonner-toast],
+:global(.dark)
+	.toaster
+	[data-sonner-toast]:hover,
+:global(.dark)
+	.toaster
+	[data-sonner-toast]:focus-within {
+	background: var(--popover) !important;
+
+	border-color: var(--border) !important;
+
+	box-shadow: var(--shadow-xl) !important;
+}
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 600px) {
+	.toaster {
+		--width: calc(100vw - 24px) !important;
+	}
+
+	.toaster [data-sonner-toast] {
+		min-height: 60px !important;
+
+		padding: 10px 11px !important;
+
+		gap: 9px !important;
+
+		border-radius:
+			calc(var(--radius) + 3px) !important;
+	}
+
+	.toaster [data-icon] {
+		width: 34px !important;
+		height: 34px !important;
+
+		flex-basis: 34px !important;
+	}
+}

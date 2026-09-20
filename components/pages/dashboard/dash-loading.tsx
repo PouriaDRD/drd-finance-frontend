@@ -1,16 +1,53 @@
+import { Skeleton } from "@/components/ui";
+
 export function DashLoading() {
 	return (
-		<div className="flex flex-col gap-4 mx-auto animate-pulse w-full bg-card p-6 rounded-xl">
-			<div className="h-10 bg-muted rounded-lg w-48" />
-			<div className="grid grid-cols-3 gap-3">
-				{[...Array(3)].map((_, i) => (
-					<div key={i} className="h-16 bg-muted rounded-lg" />
+		<div className="grid gap-4 sm:gap-5">
+			<Skeleton
+				className={`
+					h-40 w-full rounded-2xl
+				`}
+			/>
+
+			<div
+				className={`
+					grid grid-cols-1 gap-3
+					sm:grid-cols-2 xl:grid-cols-4
+				`}>
+				{Array.from({
+					length: 4,
+				}).map((_, index) => (
+					<Skeleton
+						key={index}
+						className={`
+								h-28 rounded-2xl
+							`}
+					/>
 				))}
 			</div>
-			<div className="grid grid-cols-[1fr_1.6fr] gap-4">
-				<div className="h-64 bg-muted rounded-xl" />
-				<div className="h-64 bg-muted rounded-xl" />
+
+			<div
+				className={`
+					grid gap-4 xl:grid-cols-[minmax(0,1.55fr)_minmax(300px,0.65fr)]
+				`}>
+				<Skeleton
+					className={`
+						h-52 rounded-2xl
+					`}
+				/>
+
+				<Skeleton
+					className={`
+						h-52 rounded-2xl
+					`}
+				/>
 			</div>
+
+			<Skeleton
+				className={`
+					h-105 rounded-2xl
+				`}
+			/>
 		</div>
 	);
 }

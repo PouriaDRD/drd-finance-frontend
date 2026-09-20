@@ -36,47 +36,33 @@ export function YearlyReportToolbar({
 		<div
 			className={`
 				flex flex-col gap-4 rounded-2xl
-				border border-border/70 bg-card p-4
+				border border-border/70 bg-card
+				p-4 shadow-sm
 				sm:flex-row sm:items-end
 				sm:justify-between
 			`}>
-			<div
-				className={`
-					flex items-center gap-3
-				`}>
+			<div className="flex items-center gap-3">
 				<div
 					className={`
 						flex size-10 items-center
 						justify-center rounded-xl
-						bg-primary/10 text-primary
+						bg-muted text-muted-foreground
 					`}>
 					<CalendarDays className="size-4" />
 				</div>
 
 				<div>
-					<p className="text-sm font-semibold">سال مالی</p>
+					<p className="text-sm font-semibold">سال گزارش</p>
 
-					<p
-						className={`
-							text-xs
-							text-muted-foreground
-						`}>
-						گزارش ۱۲ ماهه سال شمسی
+					<p className="mt-0.5 text-[11px] text-muted-foreground">
+						عملکرد مالی ۱۲ ماه شمسی
 					</p>
 				</div>
 			</div>
 
-			<div
-				className={`
-					flex items-end gap-2
-				`}>
+			<div className="flex items-end gap-2">
 				<div className="w-36">
-					<p
-						className={`
-							mb-2 text-xs font-medium
-						`}>
-						سال
-					</p>
+					<p className="mb-2 text-xs font-medium">سال</p>
 
 					<Select
 						value={String(year)}
@@ -84,19 +70,14 @@ export function YearlyReportToolbar({
 						onValueChange={(value) => {
 							onYearChange(Number(value));
 						}}>
-						<SelectTrigger
-							className={`
-								w-full
-							`}>
+						<SelectTrigger className="w-full">
 							<SelectValue />
 						</SelectTrigger>
 
 						<SelectContent>
-							{years.map((yearOption) => (
-								<SelectItem
-									key={yearOption}
-									value={String(yearOption)}>
-									{yearOption}
+							{years.map((item) => (
+								<SelectItem key={item} value={String(item)}>
+									{item}
 								</SelectItem>
 							))}
 						</SelectContent>

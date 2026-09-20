@@ -34,19 +34,17 @@ export default function MonthlyReportsPage() {
 
 	const [report, setReport] = useState<ReportSchema>(getCurrentReport);
 
-	const [persianMonthSummary, setPersianMonthSummary] =
-		useState<PersianMonthSummary | null>(null);
+	const [summary, setSummary] = useState<PersianMonthSummary | null>(null);
 
 	if (isLoading) {
 		return (
 			<PageLayout
 				className={`
-					flex flex-col gap-4
+					mx-auto flex w-full max-w-[1600px]
+					flex-col gap-4
 				`}>
-				<MonthlyFinanceChartSkeleton />
-
 				<DashLoading />
-
+				<MonthlyFinanceChartSkeleton />
 				<CategorySummaryStatsChartSkeleton />
 			</PageLayout>
 		);
@@ -63,30 +61,32 @@ export default function MonthlyReportsPage() {
 	return (
 		<PageLayout
 			className={`
-				flex flex-col gap-4
+				mx-auto flex w-full max-w-[1600px]
+				flex-col gap-4 sm:gap-5
 			`}>
 			<FinancePageHeader
 				title="گزارش ماهانه"
-				description={"بررسی درآمد، هزینه، مانده و تراکنش‌های هر ماه"}
+				description="تصویر دقیق درآمد، هزینه، مانده و تراکنش‌های هر ماه شمسی"
 			/>
 
-			<ReportForm
-				onSuccess={(data) => {
-					setReport(data);
-				}}
-			/>
+			<ReportForm onSuccess={setReport} />
 
-			<SummaryStats summary={persianMonthSummary} />
+			<SummaryStats summary={summary} />
 
-			<MonthlyFinanceChart summary={persianMonthSummary} />
-
-			<CategorySummaryStatsChart summary={persianMonthSummary} />
+			<div
+				className={`
+					grid gap-4
+					xl:grid-cols-[minmax(0,1.55fr)_minmax(360px,0.8fr)]
+				`}>
+				<MonthlyFinanceChart summary={summary} />
+				<CategorySummaryStatsChart summary={summary} />
+			</div>
 
 			<TransactionsCardTable
 				month={report.month}
 				year={report.year}
-				onSuccess={(summary) => {
-					setPersianMonthSummary(summary ?? null);
+				onSuccess={(value) => {
+					setSummary(value ?? null);
 				}}
 			/>
 		</PageLayout>
