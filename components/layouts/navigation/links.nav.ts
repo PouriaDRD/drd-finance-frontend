@@ -1,13 +1,6 @@
 import { Route } from "next";
 
-import {
-	ChartBarStacked,
-	LayoutDashboard,
-	LucideIcon,
-	Wallet,
-	// StarIcon,
-	// WalletIcon,
-} from "lucide-react";
+import { LayoutDashboard, LucideIcon, WalletCards } from "lucide-react";
 
 import { UserRole } from "@/features/user/types";
 
@@ -16,6 +9,7 @@ export type NavigationLink = {
 	href: Route;
 	Icon?: LucideIcon;
 	allowedRoles?: UserRole[];
+	activePrefix?: string;
 };
 
 export const SIDEBAR_LINKS: NavigationLink[] = [
@@ -26,15 +20,10 @@ export const SIDEBAR_LINKS: NavigationLink[] = [
 		allowedRoles: ["superuser", "admin", "user"],
 	},
 	{
-		name: "گزاش مالی",
-		href: "/panel/finance/reports",
-		Icon: Wallet,
-		allowedRoles: ["superuser", "admin", "user"],
-	},
-	{
-		name: "دسته‌بندی‌ها",
-		href: "/panel/finance/categories",
-		Icon: ChartBarStacked,
+		name: "امور مالی",
+		href: "/panel/finance/reports/monthly",
+		Icon: WalletCards,
+		activePrefix: "/panel/finance",
 		allowedRoles: ["superuser", "admin", "user"],
 	},
 ];
@@ -47,15 +36,10 @@ export const MOBILE_LINKS: NavigationLink[] = [
 		allowedRoles: ["superuser", "admin", "user"],
 	},
 	{
-		name: "گزاش مالی",
-		href: "/panel/finance/reports",
-		Icon: Wallet,
-		allowedRoles: ["superuser", "admin", "user"],
-	},
-	{
-		name: "دسته‌بندی‌ها",
-		href: "/panel/finance/categories",
-		Icon: ChartBarStacked,
+		name: "امور مالی",
+		href: "/panel/finance/reports/monthly",
+		Icon: WalletCards,
+		activePrefix: "/panel/finance",
 		allowedRoles: ["superuser", "admin", "user"],
 	},
 ];
@@ -70,7 +54,6 @@ export const LANDING_LINKS: LadingLink[] = [
 		label: "ویژگی‌ها",
 		href: "#features",
 	},
-
 	{
 		label: "محصولات",
 		href: "#products",

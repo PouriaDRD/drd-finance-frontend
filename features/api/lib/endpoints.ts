@@ -12,8 +12,11 @@ export const endpoints = {
 
 	finance: {
 		myCategories: "finance/my-categories/",
+
 		myActiveCategories: "finance/my-categories/active/",
+
 		createCategory: "finance/my-categories/create/",
+
 		updateCategory: (id: string) => `finance/my-categories/${id}/update/`,
 
 		myTransactionsInMonth: (month: number, year: number) =>
@@ -21,6 +24,9 @@ export const endpoints = {
 
 		myTransactionsInYear: (year: number) =>
 			`finance/my-transactions/summary/${year}/`,
+
+		exportCurrentMonthTransactions: (format: "csv" | "xlsx") =>
+			`finance/my-transactions/export/current-month/${format}/`,
 
 		createTransaction: "finance/my-transactions/create/",
 

@@ -14,4 +14,4 @@ COPY . .
 
 EXPOSE 3000
 
-CMD ["sh", "-c", "if [ ! -d node_modules/next ]; then npm ci --prefer-offline --no-audit --no-fund; fi && npm run dev -- --hostname 0.0.0.0 --port 3000"]
+CMD ["sh", "-c", "rm -rf /app/.next && if [ ! -d /app/node_modules/next ]; then npm ci --prefer-offline --no-audit --no-fund; fi && exec npm run dev -- --hostname 0.0.0.0 --port 3000"]

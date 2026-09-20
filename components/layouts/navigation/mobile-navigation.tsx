@@ -31,31 +31,38 @@ export function MobileNavigation() {
 					gridTemplateColumns: `repeat(${allowedItems.length}, minmax(0, 1fr))`,
 				}}>
 				{allowedItems.map((navigation) => (
-					<MenuItem
-						key={navigation.href}
-						href={navigation.href}
-						Icon={navigation.Icon}
-						name={navigation.name}
-					/>
+					<MenuItem key={navigation.href} {...navigation} />
 				))}
 			</div>
 		</nav>
 	);
 }
 
-function MenuItem({ href, Icon, name }: NavigationLink) {
+function MenuItem({ href, Icon, name, activePrefix }: NavigationLink) {
 	const pathname = usePathname();
 
-	const isActive = isLinkActive(pathname, href);
+	const isActive = activePrefix
+		? pathname.startsWith(activePrefix)
+		: isLinkActive(pathname, href);
 
 	return (
 		<Link
 			href={href}
-			className="relative flex flex-col items-center justify-center gap-1 rounded-2xl px-1 py-2">
+			className={`
+				relative flex flex-col
+				items-center justify-center
+				gap-1 rounded-2xl
+				px-1 py-2
+			`}>
 			{isActive && (
 				<motion.div
 					layoutId="activeTab"
-					className="absolute inset-0 rounded-2xl bg-primary/10 dark:bg-accent"
+					className={`
+						absolute inset-0
+						rounded-2xl
+						bg-primary/10
+						dark:bg-accent
+					`}
 					transition={{
 						type: "spring",
 						stiffness: 450,
@@ -65,18 +72,40 @@ function MenuItem({ href, Icon, name }: NavigationLink) {
 			)}
 
 			<div
-				className={`relative z-10 flex flex-col items-center gap-1 transition-colors duration-300 ${
-					isActive
-						? "text-primary dark:text-foreground"
-						: "text-muted-foreground"
-				}`}>
-				{Icon && <Icon className="size-4 shrink-0" />}
-				<span className="text-xs font-bold">{name}</span>
+				className={`
+					relative z-10 flex
+					flex-col items-center
+					gap-1 transition-colors
+					duration-300
+					${
+						isActive
+							? `
+								text-primary
+								dark:text-foreground
+							`
+							: `
+								text-muted-foreground
+							`
+					}
+				`}>
+				{Icon && (
+					<Icon
+						className={`
+							size-4 shrink-0
+						`}
+					/>
+				)}
+
+				<span
+					className={`
+						text-xs font-bold
+					`}>
+					{name}
+				</span>
 			</div>
 		</Link>
 	);
 }
-
 function MobileNavigationSkeleton() {
 	return (
 		<nav className="sticky md:hidden bottom-0 z-50 w-full border-t border-border/95 bg-sidebar/95 backdrop-blur-xl">

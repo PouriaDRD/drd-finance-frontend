@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 import { PageLayout } from "@/components/layouts";
-import { ErrorState, PageHeader } from "@/components/pages";
+import { ErrorState } from "@/components/pages";
 import { DashLoading } from "@/components/pages/dashboard";
 import { SummaryStats } from "@/components/pages/reports";
 import {
@@ -13,43 +13,36 @@ import {
 	MonthlyFinanceChartSkeleton,
 } from "@/features/finance/components/charts";
 import { ReportForm } from "@/features/finance/components/forms";
+import { FinancePageHeader } from "@/features/finance/components/navigation";
 import { TransactionsCardTable } from "@/features/finance/components/tables";
 import { ReportSchema } from "@/features/finance/schemas";
 import { PersianMonthSummary } from "@/features/finance/types";
-import { toEnglishDigits } from "@/features/shared/utils";
+import { toIranDateTime } from "@/features/shared/utils";
 import { useUser } from "@/features/user/context";
 
-function getCurrentPersianReport(): ReportSchema {
-	const [year, month] = new Intl.DateTimeFormat("fa-IR-u-ca-persian", {
-		year: "numeric",
-		month: "numeric",
-	})
-		.format(new Date())
-		.split("/");
+function getCurrentReport(): ReportSchema {
+	const current = toIranDateTime(new Date());
 
 	return {
-		year: Number(toEnglishDigits(year)),
-		month: Number(toEnglishDigits(month)),
+		year: current.year,
+		month: current.month,
 	};
 }
 
-export default function ReportsPage() {
+export default function MonthlyReportsPage() {
 	const { user, isAuthenticated, isLoading } = useUser();
 
-	const [report, setReport] = useState<ReportSchema>(getCurrentPersianReport);
+	const [report, setReport] = useState<ReportSchema>(getCurrentReport);
 
 	const [persianMonthSummary, setPersianMonthSummary] =
 		useState<PersianMonthSummary | null>(null);
 
-	const handleOnPersianMonthSummarySuccess = (
-		summary?: PersianMonthSummary,
-	) => {
-		setPersianMonthSummary(summary ?? null);
-	};
-
 	if (isLoading) {
 		return (
-			<PageLayout className="flex flex-col gap-4">
+			<PageLayout
+				className={`
+					flex flex-col gap-4
+				`}>
 				<MonthlyFinanceChartSkeleton />
 
 				<DashLoading />
@@ -61,17 +54,20 @@ export default function ReportsPage() {
 
 	if (!isAuthenticated || !user) {
 		return (
-			<PageLayout className="flex flex-col gap-4">
+			<PageLayout>
 				<ErrorState />
 			</PageLayout>
 		);
 	}
 
 	return (
-		<PageLayout className="flex flex-col gap-4">
-			<PageHeader
-				title="گزارش مالی"
-				description="تاریخچه تراکنش‌ها و گزارشات مالی"
+		<PageLayout
+			className={`
+				flex flex-col gap-4
+			`}>
+			<FinancePageHeader
+				title="گزارش ماهانه"
+				description={"بررسی درآمد، هزینه، مانده و تراکنش‌های هر ماه"}
 			/>
 
 			<ReportForm
@@ -80,17 +76,19 @@ export default function ReportsPage() {
 				}}
 			/>
 
+			<SummaryStats summary={persianMonthSummary} />
+
 			<MonthlyFinanceChart summary={persianMonthSummary} />
+
+			<CategorySummaryStatsChart summary={persianMonthSummary} />
 
 			<TransactionsCardTable
 				month={report.month}
 				year={report.year}
-				onSuccess={handleOnPersianMonthSummarySuccess}
+				onSuccess={(summary) => {
+					setPersianMonthSummary(summary ?? null);
+				}}
 			/>
-
-			<CategorySummaryStatsChart summary={persianMonthSummary} />
-
-			<SummaryStats summary={persianMonthSummary} />
 		</PageLayout>
 	);
 }

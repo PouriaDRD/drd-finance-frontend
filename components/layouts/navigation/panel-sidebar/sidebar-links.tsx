@@ -19,8 +19,9 @@ interface Props {
 
 export default function SidebarLinks({ user }: Props) {
 	const allowedItems = SIDEBAR_LINKS.filter((item) => {
-		// No allowedRoles = accessible to all
-		if (!item.allowedRoles) return true;
+		if (!item.allowedRoles) {
+			return true;
+		}
 
 		return item.allowedRoles.includes(user.role);
 	});
@@ -28,27 +29,35 @@ export default function SidebarLinks({ user }: Props) {
 	return (
 		<SidebarMenu className="space-y-2">
 			{allowedItems.map((navigation) => (
-				<SidebarLink
-					key={navigation.href}
-					href={navigation.href}
-					Icon={navigation.Icon}
-					name={navigation.name}
-				/>
+				<SidebarLink key={navigation.href} {...navigation} />
 			))}
 		</SidebarMenu>
 	);
 }
 
-function SidebarLink({ href, Icon, name }: NavigationLink) {
+function SidebarLink({ href, Icon, name, activePrefix }: NavigationLink) {
 	const pathname = usePathname();
 
-	const isActive = isLinkActive(pathname, href);
+	const isActive = activePrefix
+		? pathname.startsWith(activePrefix)
+		: isLinkActive(pathname, href);
 
 	return (
 		<SidebarMenuItem>
-			<Link href={href} className="flex items-center gap-2">
-				<SidebarMenuButton isActive={isActive} variant={"default"}>
-					{Icon && <Icon className="size-4 shrink-0" />}
+			<Link
+				href={href}
+				className={`
+					flex items-center gap-2
+				`}>
+				<SidebarMenuButton isActive={isActive} variant="default">
+					{Icon && (
+						<Icon
+							className={`
+								size-4 shrink-0
+							`}
+						/>
+					)}
+
 					<span>{name}</span>
 				</SidebarMenuButton>
 			</Link>
