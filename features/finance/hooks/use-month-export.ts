@@ -4,35 +4,46 @@ import { useState } from "react";
 
 import { toast } from "sonner";
 
-import { CurrentMonthExportFormat, financeApi } from "../api";
+import {
+	financeApi,
+	getPersianMonthLabel,
+	TransactionExportFormat,
+} from "../api";
 
-export function useCurrentMonthExport() {
+export function useMonthExport() {
 	const [exportingFormat, setExportingFormat] =
-		useState<CurrentMonthExportFormat | null>(null);
+		useState<TransactionExportFormat | null>(null);
 
-	const exportCurrentMonth = async (format: CurrentMonthExportFormat) => {
+	const exportMonth = async (
+		format: TransactionExportFormat,
+		year: number,
+		month: number,
+	) => {
 		if (exportingFormat) {
 			return;
 		}
 
 		setExportingFormat(format);
 
+		const periodLabel = `${getPersianMonthLabel(month)} ${year}`;
+
 		try {
-			const { blob, filename } =
-				await financeApi.exportCurrentMonthTransactions(format);
+			const { blob } =
+				await financeApi.exportTransactionsInMonth(
+					year,
+					month,
+					format,
+				);
 
 			const objectUrl = URL.createObjectURL(blob);
-
 			const link = document.createElement("a");
 
 			link.href = objectUrl;
-			link.download = filename;
+			link.download = `${periodLabel}.${format}`;
 			link.style.display = "none";
 
 			document.body.appendChild(link);
-
 			link.click();
-
 			link.remove();
 
 			window.setTimeout(() => {
@@ -40,15 +51,13 @@ export function useCurrentMonthExport() {
 			}, 1000);
 
 			toast.success(
-				format === "xlsx"
-					? "خروجی Excel ماه جاری با موفقیت دریافت شد."
-					: "خروجی CSV ماه جاری با موفقیت دریافت شد.",
+				`خروجی ${periodLabel} با موفقیت دریافت شد.`,
 			);
 		} catch (error) {
 			const message =
 				error instanceof Error
 					? error.message
-					: "دریافت خروجی ماه جاری با خطا مواجه شد.";
+					: `دریافت خروجی ${periodLabel} با خطا مواجه شد.`;
 
 			toast.error(message);
 		} finally {
@@ -57,7 +66,7 @@ export function useCurrentMonthExport() {
 	};
 
 	return {
-		exportCurrentMonth,
+		exportMonth,
 		exportingFormat,
 		isExporting: exportingFormat !== null,
 	};

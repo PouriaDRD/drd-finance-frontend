@@ -17,16 +17,24 @@ export const endpoints = {
 
 		createCategory: "finance/my-categories/create/",
 
-		updateCategory: (id: string) => `finance/my-categories/${id}/update/`,
+		updateCategory: (id: string) =>
+			`finance/my-categories/${id}/update/`,
 
-		myTransactionsInMonth: (month: number, year: number) =>
+		myTransactionsInMonth: (
+			month: number,
+			year: number,
+		) =>
 			`finance/my-transactions/summary/${year}/${month}/`,
 
 		myTransactionsInYear: (year: number) =>
 			`finance/my-transactions/summary/${year}/`,
 
-		exportCurrentMonthTransactions: (format: "csv" | "xlsx") =>
-			`finance/my-transactions/export/current-month/${format}/`,
+		exportTransactionsInMonth: (
+			year: number,
+			month: number,
+			format: "csv" | "xlsx",
+		) =>
+			`finance/my-transactions/export/${year}/${month}/${format}/`,
 
 		createTransaction: "finance/my-transactions/create/",
 
